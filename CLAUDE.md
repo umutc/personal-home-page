@@ -40,10 +40,18 @@ AWS Amplify deployment configuration:
 - App ID: d2ktjps5ul2e7i
 - Region: eu-west-1
 - Console: https://eu-west-1.console.aws.amazon.com/amplify/apps/d2ktjps5ul2e7i
-- Domain: https://d2ktjps5ul2e7i.amplifyapp.com
+- Default Domain: https://d2ktjps5ul2e7i.amplifyapp.com
+- Custom Domain: https://umutcelik.com.tr (and https://www.umutcelik.com.tr)
 - Build spec: Defined in `amplify.yml`
 - Status: ✅ Successfully deployed
 - Note: Recreated app without IAM role to resolve permission issues
+
+### Custom Domain Configuration
+- Primary Domain: umutcelik.com.tr
+- DNS: Managed via Route53 (Hosted Zone ID: Z06846003RPNEE6EG5Y01)
+- SSL: AWS Certificate Manager (ACM) managed certificate
+- CloudFront Distribution: d2hcxo4m33ny9y.cloudfront.net
+- Both root domain and www subdomain are configured
 
 ## Important Considerations
 
