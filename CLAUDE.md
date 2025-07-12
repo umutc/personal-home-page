@@ -46,4 +46,4 @@ GitHub Pages deployment is automated via `.github/workflows/static.yml`:
 
 ## Amplify Configuration
 
-- Amplify Project ID: d29ml85157wf4g
+- Amplify Project ID: d138v710qmk4s6
