@@ -28,10 +28,22 @@ Since this is a static site with no build process:
 
 ## Deployment
 
+### GitHub Pages (Primary - Working)
 GitHub Pages deployment is automated via `.github/workflows/static.yml`:
 - Triggers on push to `main` branch
 - No build step required - deploys static files directly
 - Site available at: https://umutcelik.github.io/personal-home-page/
+- Status: ✅ Successfully deployed
+
+### AWS Amplify (Secondary - Has Issues)
+AWS Amplify deployment configuration:
+- App ID: d29ml85157wf4g
+- Region: eu-west-1
+- Console: https://eu-west-1.console.aws.amazon.com/amplify/apps/d29ml85157wf4g
+- Domain: https://d29ml85157wf4g.amplifyapp.com
+- Build spec: Defined in `amplify.yml`
+- Status: ❌ Failing due to IAM role assumption error
+- Issue: "Unable to assume specified IAM Role" - requires AWS Console intervention
 
 ## Important Considerations
 
@@ -48,3 +60,6 @@ GitHub Pages deployment is automated via `.github/workflows/static.yml`:
 
 - Amplify Project ID: d29ml85157wf4g
 - Region: eu-west-1
+- Repository: Connected via GitHub OAuth token
+- Build Spec: Uses `amplify.yml` (no build required for static site)
+- IAM Role: Currently has issues - app was configured with `arn:aws:iam::585576670327:role/umut-home-amplify` but fails to assume it
