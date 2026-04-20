@@ -4,70 +4,61 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a static personal portfolio website built with HTML, CSS, and minimal JavaScript. It's based on the "Identity" template by HTML5 UP and is deployed via GitHub Pages.
+Personal portfolio site for Umut Çelik at https://umutcelik.com.tr. Static HTML/CSS, no build step, deployed via GitHub Pages on every push to `main`.
 
 ## Development Workflow
 
-Since this is a static site with no build process:
-- Edit HTML/CSS files directly
-- Test changes by opening `index.html` in a browser
-- Commit and push to `main` branch to deploy via GitHub Pages
+Edit files, commit, push. There's no build step and no framework to learn.
 
-## Architecture and Structure
+```bash
+# Local preview
+python3 -m http.server 8000
+# open http://localhost:8000
+```
 
-### Key Files
-- `index.html` - Single page containing all content
-- `assets/css/main.css` - Primary stylesheet
-- `umut-celik.png` - Profile image referenced in HTML
+## Architecture
 
-### Design Patterns
-- **Single Page Application**: All content is in index.html
-- **Responsive Design**: Uses media queries for mobile/tablet breakpoints
-- **Progressive Enhancement**: Includes IE8+ compatibility layers
-- **Data URI Usage**: Favicon is embedded as data URI for security
+- `index.html` — single page, semantic HTML with JSON-LD Person schema in head
+- `assets/css/main.css` — hand-written CSS, system font stack, CSS variables, `prefers-color-scheme` dark mode
+- `umut-celik.jpg` — avatar (400x400, ~60 KB, resized from a 767 KB PNG via `sips`)
+- `robots.txt` + `sitemap.xml` — crawler metadata
+- `CNAME` — managed automatically by GitHub Pages Settings; do not create a file by hand
 
 ## Deployment
 
-### GitHub Pages (Primary - Working)
-GitHub Pages deployment is automated via `.github/workflows/static.yml`:
-- Triggers on push to `main` branch
-- No build step required - deploys static files directly
-- Site available at: https://umutcelik.github.io/personal-home-page/
-- Status: ✅ Successfully deployed
+**GitHub Pages is the only live target.** Configured via `.github/workflows/static.yml`:
+- Triggers on push to `main` (or via `workflow_dispatch`)
+- No build — uploads the repo root as the Pages artifact
+- Takes ~1-2 minutes; watch with `gh run list -R umutc/personal-home-page`
 
-### AWS Amplify (Secondary - Working)
-AWS Amplify deployment configuration:
-- App ID: d2ktjps5ul2e7i
-- Region: eu-west-1
-- Console: https://eu-west-1.console.aws.amazon.com/amplify/apps/d2ktjps5ul2e7i
-- Default Domain: https://d2ktjps5ul2e7i.amplifyapp.com
-- Custom Domain: https://umutcelik.com.tr (and https://www.umutcelik.com.tr)
-- Build spec: Defined in `amplify.yml`
-- Status: ✅ Successfully deployed
-- Note: Recreated app without IAM role to resolve permission issues
+### DNS / domain (do not change)
 
-### Custom Domain Configuration
-- Primary Domain: umutcelik.com.tr
-- DNS: Managed via Route53 (Hosted Zone ID: Z06846003RPNEE6EG5Y01)
-- SSL: AWS Certificate Manager (ACM) managed certificate
-- CloudFront Distribution: d2hcxo4m33ny9y.cloudfront.net
-- Both root domain and www subdomain are configured
+- Custom domain `umutcelik.com.tr` is set in GitHub Pages Settings (no `CNAME` file in repo)
+- Route53 hosted zone `Z06846003RPNEE6EG5Y01` (AWS profile `umut`)
+- A records point to GitHub Pages IPs `185.199.108-111.153`
+- `www` CNAME → `umutc.github.io`
+- HTTPS via Let's Encrypt, provisioned automatically by GitHub Pages
 
-## Important Considerations
+### Retired infrastructure
 
-1. **No Build Process**: This is pure HTML/CSS - no npm, webpack, or build tools
-2. **Browser Compatibility**: Maintains support for older browsers (IE8+)
-3. **External Resources**: Uses Google Fonts and has Google Analytics integration
-4. **Template License**: Based on Identity by HTML5 UP (CCA 3.0 license)
+The old AWS Amplify app (`d2ktjps5ul2e7i`, eu-west-1) and ACM validation CNAMEs are inactive but still exist. Do not reconnect or redeploy to Amplify.
 
-## AWS Configuration
+## Content rules
 
-- AWS profile is umut. (--profile umut)
+- Content is English (job market is US). Comments, commits, PR messages: English.
+- Keep it tight. No skill bars, no "hire me" buttons, no auto-play anything, no testimonials carousel.
+- Do not mention visa / sponsorship / F-1 / CPT / OPT on the public site. Those conversations belong after recruiter interest is established.
+- Phone number stays off the site.
+- Work section: 3-4 roles max, curated. Latest first.
 
-## Amplify Configuration
+## Tech guardrails
 
-- Amplify Project ID: d2ktjps5ul2e7i
-- Region: eu-west-1
-- Repository: Connected via GitHub OAuth token
-- Build Spec: Uses `amplify.yml` (no build required for static site)
-- IAM Role: None (using default Amplify permissions)
+- Keep the page single-file, no JS unless a feature genuinely needs it.
+- System font stack (no Google Fonts, no web fonts). Page should render before first paint.
+- Lighthouse target: 100/100/100/100. If a change drops any score, revert or fix.
+- No external analytics beacon currently. If added later, prefer Plausible over GA4.
+- Accessibility: `<html lang="en">`, skip link, semantic landmarks, visible `:focus-visible` outline, `prefers-reduced-motion` respected.
+
+## Canonical identity data
+
+The source of truth for Umut's work history, skills, education, and contact info lives in `/Users/umut/code/carrier/knowledge/people/umut-celik/`. When updating site content (new role, new stack), pull from there rather than inventing copy.
