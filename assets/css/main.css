@@ -86,8 +86,15 @@ h1 {
     color: var(--text);
 }
 
+.tagline {
+    margin: 0.3rem 0 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+    letter-spacing: 0.005em;
+}
+
 .meta {
-    margin: 0.25rem 0 0;
+    margin: 0.35rem 0 0;
     font-size: 0.85rem;
     color: var(--muted);
 }
@@ -124,6 +131,26 @@ a:hover { border-bottom-color: currentColor; }
 strong { font-weight: 600; color: var(--text); }
 
 .about p { font-size: 1rem; }
+
+.stack {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 0.55rem 1.5rem;
+    font-size: 0.9375rem;
+}
+
+.stack dt {
+    font-size: 0.8125rem;
+    color: var(--muted);
+    font-weight: 500;
+    padding-top: 0.1rem;
+}
+
+.stack dd {
+    margin: 0;
+    color: var(--text);
+}
 
 .timeline {
     list-style: none;
@@ -222,10 +249,17 @@ strong { font-weight: 600; color: var(--text); }
     .intro { gap: 1rem; }
     .avatar { width: 72px; height: 72px; }
     h1 { font-size: 1.35rem; }
-    .timeline li, .edu li {
+    .timeline li, .edu li, .stack {
         grid-template-columns: 1fr;
         gap: 0.25rem;
     }
+    .stack dt {
+        padding-top: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.72rem;
+    }
+    .stack dt:first-child { padding-top: 0; }
     .when { font-weight: 500; }
 }
 
