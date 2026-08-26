@@ -48,7 +48,8 @@ The old AWS Amplify app (`d2ktjps5ul2e7i`, eu-west-1) and ACM validation CNAMEs 
 - Content is English (job market is US). Comments, commits, PR messages: English.
 - Keep it tight. No skill bars, no "hire me" buttons, no auto-play anything, no testimonials carousel.
 - Do not mention visa / sponsorship / F-1 / CPT / OPT on the public site. Those conversations belong after recruiter interest is established.
-- Phone number stays off the site.
+- Phone number stays off the site — page HTML AND the hosted resume PDF, no exceptions. The hosted PDF is built from carrier's `umutcelik-public-2026.json` spec (hide_phone: true). The phone-visible generic resume (`umutcelik-general-2026.json`) is only sent directly in applications, never hosted here.
+- Public location is "New York, NY" (NYC metro framing; "Jersey City" confused recruiters). Real address stays Jersey City in carrier's contact.json and application forms.
 - Work section: 3-4 roles max, curated. Latest first.
 
 ## Tech guardrails
