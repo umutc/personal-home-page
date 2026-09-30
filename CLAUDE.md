@@ -51,9 +51,9 @@ The old AWS Amplify app (`d2ktjps5ul2e7i`, eu-west-1) and ACM validation CNAMEs 
 - Content is English (job market is US). Comments, commits, PR messages: English.
 - The public name is "Umut Celik" (ASCII, no Ç) everywhere: titles, headings, alt text, structured data, OG images, favicon. The only exception is the invisible JSON-LD `alternateName`, which lets searches for the Turkish spelling resolve to the same person.
 - Keep it tight. No skill bars, no "hire me" buttons, no auto-play anything, no testimonials carousel.
-- Do not mention visa / sponsorship / F-1 / CPT / OPT on the public site. Those conversations belong after recruiter interest is established.
-- Phone number stays off the site — page HTML AND the hosted resume PDF, no exceptions. The hosted PDF is built from carrier's `umutcelik-public-2026.json` spec (hide_phone: true). The phone-visible generic resume (`umutcelik-general-2026.json`) is only sent directly in applications, never hosted here.
-- Public location is "New York, NY" (NYC metro framing; "Jersey City" confused recruiters). Real address stays Jersey City in carrier's contact.json and application forms.
+- No phone number anywhere: not in the page HTML, not in the hosted resume PDF.
+- Public location is "New York, NY".
+- Personal job-search rules and identity sources live in `CLAUDE.local.md` (gitignored, never committed). Read it before changing public content.
 - Work section: 3-4 roles max, curated. Latest first.
 
 ## Tech guardrails
@@ -63,7 +63,3 @@ The old AWS Amplify app (`d2ktjps5ul2e7i`, eu-west-1) and ACM validation CNAMEs 
 - Lighthouse target: 100/100/100/100. If a change drops any score, revert or fix.
 - No external analytics beacon currently. If added later, prefer Plausible over GA4.
 - Accessibility: `<html lang="en">`, skip link, semantic landmarks, visible `:focus-visible` outline, `prefers-reduced-motion` respected.
-
-## Canonical identity data
-
-The source of truth for Umut's work history, skills, education, and contact info lives in `/Users/umut/code/carrier/knowledge/people/umut-celik/`. When updating site content (new role, new stack), pull from there rather than inventing copy.
