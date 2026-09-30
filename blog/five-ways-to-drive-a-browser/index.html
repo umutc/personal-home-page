@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Five ways to drive a browser · Umut Çelik</title>
+    <meta name="description" content="I ran the same Claude Code agent through Claude in Chrome, Safari's new MCP server, Playwright on Chrome and WebKit, and Orca's built-in browser: 670 runs, with every transcript published.">
+    <meta name="author" content="Umut Çelik">
+    <link rel="canonical" href="https://umutcelik.com.tr/blog/five-ways-to-drive-a-browser/">
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Five ways to drive a browser">
+    <meta property="og:description" content="The same Claude Code agent, five browser automation surfaces, 670 runs. Every surface can do the job; the difference is cost.">
+    <meta property="og:url" content="https://umutcelik.com.tr/blog/five-ways-to-drive-a-browser/">
+    <meta property="og:image" content="https://umutcelik.com.tr/og.png">
+    <meta property="article:published_time" content="2026-09-30">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Five ways to drive a browser">
+    <meta name="twitter:description" content="The same Claude Code agent, five browser automation surfaces, 670 runs.">
+    <meta name="twitter:image" content="https://umutcelik.com.tr/og.png">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0a'/%3E%3Ctext x='50%25' y='54%25' font-family='-apple-system,system-ui,sans-serif' font-size='18' font-weight='600' fill='%23fafafa' text-anchor='middle' dominant-baseline='middle'%3EUÇ%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/post.css">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Five ways to drive a browser",
+        "datePublished": "2026-09-30",
+        "author": { "@type": "Person", "name": "Umut Çelik", "url": "https://umutcelik.com.tr/" },
+        "url": "https://umutcelik.com.tr/blog/five-ways-to-drive-a-browser/",
+        "isBasedOn": "https://github.com/umutc/agent-browser-benchmark"
+    }
+    </script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <main id="main">
+        <nav class="site-nav" aria-label="Site">
+            <a href="/">Umut Çelik</a>
+            <a href="/blog/">Writing</a>
+        </nav>
+
+        <article>
+            <header class="post-header">
+                <h1>Five ways to drive a browser</h1>
+                <p class="dek">I ran the same Claude Code agent through Claude in Chrome, Safari's new MCP server, Playwright on Chrome and WebKit, and Orca's built-in browser. 670 runs later, every surface could do the job. What separated them was cost, and a handful of sharp edges.</p>
+                <p class="meta"><time datetime="2026-09-30">September 30, 2026</time> · Code and every raw transcript: <a href="https://github.com/umutc/agent-browser-benchmark">github.com/umutc/agent-browser-benchmark</a></p>
+            </header>
+
+            <div class="post">
+                <p>Safari 27 shipped an MCP server, which gave me a fifth way to let a coding agent use a browser. I already had Claude in Chrome, Playwright's MCP server, and the browser built into Orca, the tool I run my agents in. I did not want to pick one by feel, so I built a benchmark: the same agent, the same model, the same prompts, one browser surface per run, and a server that checks every answer against what actually happened on the page.</p>
+
+                <h2>The setup</h2>
+                <p>Every run is a fresh <code>claude -p</code> process with exactly one browser surface. <code>--strict-mcp-config</code> loads a single MCP server, the only built-in tool is <code>Read</code>, and <code>--setting-sources project</code> keeps my personal instructions out of the run. Without Bash or WebFetch, the agent cannot quietly <code>curl</code> the page instead of using the browser. Orca's browser is a command-line tool, so that lane gets Bash restricted to <code>orca</code> browser commands and nothing else.</p>
+
+                <div class="table-wrap">
+                    <table>
+                        <caption>The five surfaces</caption>
+                        <thead><tr><th scope="col">Surface</th><th scope="col">Engine</th><th scope="col">Interface</th></tr></thead>
+                        <tbody>
+                            <tr><th scope="row"><span class="sw s1" aria-hidden="true"></span>Claude in Chrome</th><td>Chrome 154, my own profile</td><td>Extension, built into Claude Code</td></tr>
+                            <tr><th scope="row"><span class="sw s2" aria-hidden="true"></span>Playwright · Chrome</th><td>Chrome 154, fresh profile</td><td><code>@playwright/mcp</code> 0.0.83</td></tr>
+                            <tr><th scope="row"><span class="sw s3" aria-hidden="true"></span>Orca browser</th><td>Chromium 150 (Electron)</td><td><code>orca</code> CLI through Bash</td></tr>
+                            <tr><th scope="row"><span class="sw s4" aria-hidden="true"></span>Safari MCP</th><td>Safari 27</td><td><code>safaridriver --mcp</code></td></tr>
+                            <tr><th scope="row"><span class="sw s5" aria-hidden="true"></span>Playwright · WebKit</th><td>WebKit 26.6 (Playwright build)</td><td><code>@playwright/mcp</code> 0.0.83</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>The pages come from a local fixture server. Each run gets its own origin (<code>run-&lt;id&gt;.localhost</code>), so cookies and storage start empty in every browser, even in my everyday Chrome profile. The expected answers are derived from a secret that only exists in the runner's memory, so an agent that reads the benchmark's source still cannot compute them. There are 36 tasks in four tiers:</p>
+                <ul>
+                    <li><strong>22 capability probes</strong>, three runs each: one skill per page, from clicking a button to a cross-origin iframe, a <code>confirm()</code> dialog, an HttpOnly cookie, a code drawn on a canvas below the fold, and print media.</li>
+                    <li><strong>8 realistic tasks</strong>, five runs each: a checkout with validation, a filtered catalog, a paginated table, a wizard with a custom date picker, a login with a code from a second tab, detail-page scraping, a shop full of pop-ups, and a pointer-driven kanban board.</li>
+                    <li><strong>5 bug hunts</strong>, five runs each: pages with planted problems that move every run, from failing API calls behind normal-looking widgets to widgets that only break in WebKit.</li>
+                    <li><strong>A baseline</strong> that answers without tools, to measure what each surface costs before it does anything.</li>
+                </ul>
+                <p>Model: Opus 5.5 at medium effort. Browsers ran visible and maximized, and a beacon on every page recorded the real viewport, so I know every surface saw the same 1728-pixel-wide page.</p>
+
+                <h2>Results</h2>
+                <div class="table-wrap">
+                    <table>
+                        <caption>670 runs, September 29–30, 2026</caption>
+                        <thead><tr><th scope="col">Surface</th><th scope="col">Probes</th><th scope="col">Passed</th><th scope="col">Time</th><th scope="col">Input</th><th scope="col">Fixed</th><th scope="col">Cost</th></tr></thead>
+                        <tbody>
+                            <tr><th scope="row"><span class="sw s1" aria-hidden="true"></span>Claude in Chrome</th><td class="n">20/22</td><td class="n">126/131</td><td class="n">26 s</td><td class="n">122k</td><td class="n">15.7k</td><td class="n">$22.5</td></tr>
+                            <tr><th scope="row"><span class="sw s2" aria-hidden="true"></span>Playwright · Chrome</th><td class="n">22/22</td><td class="n">131/131</td><td class="n">13 s</td><td class="n">57k</td><td class="n">10.6k</td><td class="n">$10.9</td></tr>
+                            <tr><th scope="row"><span class="sw s3" aria-hidden="true"></span>Orca browser</th><td class="n">20/22</td><td class="n">126/131</td><td class="n">13 s</td><td class="n">33k</td><td class="n">6.4k</td><td class="n">$14.9</td></tr>
+                            <tr><th scope="row"><span class="sw s4" aria-hidden="true"></span>Safari MCP</th><td class="n">21/22</td><td class="n">127/131</td><td class="n">13 s</td><td class="n">38k</td><td class="n">8.5k</td><td class="n">$10.7</td></tr>
+                            <tr><th scope="row"><span class="sw s5" aria-hidden="true"></span>Playwright · WebKit</th><td class="n">22/22</td><td class="n">131/131</td><td class="n">13 s</td><td class="n">57k</td><td class="n">10.6k</td><td class="n">$11.6</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p><em>Probes</em> counts capability probes passed in at least two of three runs. <em>Time</em> and <em>Input</em> are medians per run; <em>Fixed</em> is the input a reply costs before any tool is used. Cost is the list-price equivalent Claude Code reports for each surface's 134 runs; I ran on a Max subscription, and the whole benchmark used about 4% of a week's allowance.</p>
+
+                <figure class="chart">
+                    <figcaption>Input tokens per run</figcaption>
+                    <svg viewBox="0 0 640 202" role="img" aria-label="Median input tokens per run: Claude in Chrome 122k, Playwright Chrome 57k, Orca 33k, Safari MCP 38k, Playwright WebKit 57k"><line class="grid" x1="158" x2="158" y1="6" y2="180"/><text class="tick" x="158" y="196" text-anchor="middle">0k</text><line class="grid" x1="264.5" x2="264.5" y1="6" y2="180"/><text class="tick" x="264.5" y="196" text-anchor="middle">35k</text><line class="grid" x1="371" x2="371" y1="6" y2="180"/><text class="tick" x="371" y="196" text-anchor="middle">70k</text><line class="grid" x1="477.5" x2="477.5" y1="6" y2="180"/><text class="tick" x="477.5" y="196" text-anchor="middle">105k</text><line class="grid" x1="584" x2="584" y1="6" y2="180"/><text class="tick" x="584" y="196" text-anchor="middle">140k</text><text class="label" x="148" y="27" text-anchor="end">Claude in Chrome</text><path class="f1" d="M158,15h367.2a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-367.2z"/><text class="value" x="537.2" y="27">122k</text><text class="label" x="148" y="61" text-anchor="end">Playwright · Chrome</text><path class="f2" d="M158,49h170.1a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-170.1z"/><text class="value" x="340.1" y="61">57.2k</text><text class="label" x="148" y="95" text-anchor="end">Orca browser</text><path class="f3" d="M158,83h95.8a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-95.8z"/><text class="value" x="265.8" y="95">32.8k</text><text class="label" x="148" y="129" text-anchor="end">Safari MCP</text><path class="f4" d="M158,117h110.7a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-110.7z"/><text class="value" x="280.7" y="129">37.7k</text><text class="label" x="148" y="163" text-anchor="end">Playwright · WebKit</text><path class="f5" d="M158,151h169.1a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-169.1z"/><text class="value" x="339.1" y="163">56.9k</text></svg>
+                    <p class="note">Median over probes, realistic tasks and bug hunts.</p>
+                </figure>
+
+                <figure class="chart">
+                    <figcaption>Time per realistic task</figcaption>
+                    <svg viewBox="0 0 640 202" role="img" aria-label="Median time per realistic task: Claude in Chrome 39 s, Playwright Chrome 20 s, Orca 27 s, Safari MCP 22 s, Playwright WebKit 21 s"><line class="grid" x1="158" x2="158" y1="6" y2="180"/><text class="tick" x="158" y="196" text-anchor="middle">0 s</text><line class="grid" x1="264.5" x2="264.5" y1="6" y2="180"/><text class="tick" x="264.5" y="196" text-anchor="middle">10 s</text><line class="grid" x1="371" x2="371" y1="6" y2="180"/><text class="tick" x="371" y="196" text-anchor="middle">20 s</text><line class="grid" x1="477.5" x2="477.5" y1="6" y2="180"/><text class="tick" x="477.5" y="196" text-anchor="middle">30 s</text><line class="grid" x1="584" x2="584" y1="6" y2="180"/><text class="tick" x="584" y="196" text-anchor="middle">40 s</text><text class="label" x="148" y="27" text-anchor="end">Claude in Chrome</text><path class="f1" d="M158,15h411.4a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-411.4z"/><text class="value" x="581.4" y="27">39 s</text><text class="label" x="148" y="61" text-anchor="end">Playwright · Chrome</text><path class="f2" d="M158,49h209.0a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-209.0z"/><text class="value" x="379.0" y="61">20 s</text><text class="label" x="148" y="95" text-anchor="end">Orca browser</text><path class="f3" d="M158,83h283.6a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-283.6z"/><text class="value" x="453.6" y="95">27 s</text><text class="label" x="148" y="129" text-anchor="end">Safari MCP</text><path class="f4" d="M158,117h230.3a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-230.3z"/><text class="value" x="400.3" y="129">22 s</text><text class="label" x="148" y="163" text-anchor="end">Playwright · WebKit</text><path class="f5" d="M158,151h219.6a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-219.6z"/><text class="value" x="389.6" y="163">21 s</text></svg>
+                    <p class="note">Median seconds for the eight multi-step tasks.</p>
+                </figure>
+
+                <h2>What I learned</h2>
+
+                <h3>Every surface can do the job. The difference is cost.</h3>
+                <p>No surface fell below 96%, and Playwright passed all 131 runs on both engines. The spread is in time and tokens: the most expensive surface needed twice the time and nearly four times the input tokens of the cheapest.</p>
+
+                <h3>Claude in Chrome costs about twice as much</h3>
+                <p>A median run took 26 seconds and 122k input tokens, against 13 seconds and 33k to 57k for the other four. It reaches for screenshots more often (a median of 4.5 images per realistic task), its fixed context is the largest at 16k tokens, and each tool call round-trips through the extension. It also could not read an HttpOnly cookie in any run. None of this measures what it is actually for: driving my own browser, where I am already signed in. For that it is still the only option here.</p>
+
+                <h3>Safari MCP is the leanest, with two gaps</h3>
+                <p>It was the cheapest surface overall and returned the most compact page reads, a median of 0.8 KB per probe. Two things are missing. A native <code>confirm()</code> left its click call hanging until the four-minute timeout, in all three dialog runs. And it has no press-move-release gesture, so on the kanban board the agent had to fake the drag by dispatching pointer events from page JavaScript. Only 70% of its passing interactions reached the page as real input (<code>event.isTrusted</code>), against 100% for every other surface.</p>
+
+                <h3>Orca's browser is fragile around the host app</h3>
+                <p>A native <code>confirm()</code> dropped the Orca runtime connection, so every command after it failed; one of three runs got through with a workaround. <code>set media print</code> reported success without changing the media type. Its speed also depended on the Orca window itself: its viewport follows the panel size, and once the harness pre-opened a pinned tab and the workspace was on screen, its median run time halved.</p>
+
+                <h3>The interface matters more than the engine</h3>
+                <p>Playwright on Chrome and on WebKit finished within a second of each other on every tier. The bug hunt built around engine differences came out exactly as the engines dictate: both WebKit surfaces found three broken widgets, because two of them call Chromium-only APIs, and all three Chromium surfaces found one.</p>
+
+                <h3>The agents said when they took a shortcut</h3>
+                <p>Chrome and Orca have no way to emulate print media, so the agents improvised: one rewrote the page's print CSS and fired <code>beforeprint</code>, the other rendered a PDF to trigger the print handler. Both reached the right code and explained the workaround in their notes. The checker still fails those runs, because the task asked for real print media. They are the only five cases where an agent claimed success and failed.</p>
+
+                <h2>What went wrong while measuring</h2>
+                <p>The benchmark found bugs in itself before it found anything about the browsers, and I think those are worth listing:</p>
+                <ul>
+                    <li><strong>Two fixture bugs.</strong> Before the full run, a scripted Playwright solution solved every task in both Chrome and WebKit. It caught a pop-up whose <code>display: flex</code> overrode the <code>hidden</code> attribute, which would have failed every agent, and a console page where two identical WebKit exceptions were reported as one, so the correct answer would have looked wrong.</li>
+                    <li><strong>A resized window.</strong> On the “make the viewport phone-width” probe, Claude in Chrome shrank my real Chrome window to 500 pixels and never restored it. The next four Chrome runs started narrow. The viewport beacon caught it; I discarded those runs, and the harness now restores window bounds and refuses runs that start narrower than 1700 pixels.</li>
+                    <li><strong>A false rate limit.</strong> An API <code>529 Overloaded</code> error looked like a usage limit to the first version of the runner, which then planned to sleep for four and a half hours.</li>
+                    <li><strong>A safety filter.</strong> The HttpOnly-cookie probe tripped the API's cyber safeguard in 12 of its 15 runs. “Read this session cookie” looks a lot like cookie theft. The refused turn was retracted and re-run on an older model, so that probe mixes models; the other 654 runs used Opus 5.5 only.</li>
+                </ul>
+                <p>The first 174 runs ran one at a time. For the rest I ran all five surfaces on the same task at the same moment, which was about five times faster and arguably fairer, since every surface saw the same machine load and the same API conditions. For four of the five, times on matching tasks moved by at most 6%.</p>
+
+                <h2>What I use now</h2>
+                <p>For agent work in a clean browser, such as tests, scraping and form automation, I default to Playwright's MCP server. It never failed, and the engine is a flag. When token cost matters and the page has no native dialogs or drags, Safari's MCP server is surprisingly good. Claude in Chrome is for the times I need my own signed-in session, and I budget twice the tokens for it.</p>
+
+                <h2>Limits</h2>
+                <ul>
+                    <li>One model at one effort setting. The tasks turned out easy for it, so this benchmark separates cost and edge cases better than general competence. A smaller model would probably spread the pass rates.</li>
+                    <li>Claude Code ships its own system-prompt guidance for Claude in Chrome; the others rely on their tool descriptions.</li>
+                    <li>Engine builds differ, and Playwright's WebKit is not the engine inside Safari 27.</li>
+                    <li>Local fixture pages only: no sign-in walls, bot detection or very heavy real-world pages.</li>
+                </ul>
+
+                <h2>Sources</h2>
+                <ol class="sources">
+                    <li><a href="https://github.com/umutc/agent-browser-benchmark">umutc/agent-browser-benchmark</a>: the harness, fixture site, task definitions, all 670 run records and every raw agent transcript (MIT). The full report with per-task tables is <code>results/main/report.html</code>.</li>
+                    <li><a href="https://webkit.org/blog/18136/introducing-the-safari-mcp-server-for-web-developers/">Introducing the Safari MCP server for web developers</a>, WebKit blog.</li>
+                    <li><a href="https://www.npmjs.com/package/@playwright/mcp">@playwright/mcp</a> on npm; this benchmark used version 0.0.83.</li>
+                    <li><a href="https://claude.com/claude-code">Claude Code</a>, the agent every run used, version 2.1.285.</li>
+                </ol>
+
+                <p class="post-footer-note">I designed and ran this benchmark with Claude Code as a pair. It wrote most of the harness and the first draft of this post; I reviewed the design, the anomalies and the conclusions.</p>
+            </div>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <p><a href="/">Umut Çelik</a> · <a href="/blog/">Writing</a></p>
+    </footer>
+</body>
+</html>
