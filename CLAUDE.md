@@ -34,7 +34,7 @@ python3 -m http.server 8000
 ### DNS / domain (do not change)
 
 - Custom domain `umutcelik.com.tr` is set in GitHub Pages Settings (no `CNAME` file in repo)
-- Route53 hosted zone `Z06846003RPNEE6EG5Y01` (AWS profile `umut`)
+- Route53 hosted zone `Z06846003RPNEE6EG5Y01` (AWS profile `personal`, account 585576670327)
 - A records point to GitHub Pages IPs `185.199.108-111.153`
 - `www` CNAME → `umutc.github.io`
 - HTTPS via Let's Encrypt, provisioned automatically by GitHub Pages
