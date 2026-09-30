@@ -1,0 +1,18 @@
+# Umut Celik
+
+> Senior software engineer in New York, NY. Builds production systems in Node.js and TypeScript: autonomous AI agents, large-scale web scraping, and AWS serverless.
+
+## Pages
+
+- [Home](https://umutcelik.com.tr/): profile, stack, selected work and education
+- [Writing](https://umutcelik.com.tr/blog/): all posts ([Atom feed](https://umutcelik.com.tr/blog/feed.xml))
+- [Resume (PDF)](https://umutcelik.com.tr/Umut_Celik_Resume.pdf)
+
+## Writing
+
+- [Five ways to drive a browser](https://umutcelik.com.tr/blog/five-ways-to-drive-a-browser/): a 670-run benchmark of Claude in Chrome, Safari MCP, Playwright MCP on Chrome and WebKit, and Orca's built-in browser, all driven by the same Claude Code agent. Code, run records and raw transcripts: https://github.com/umutc/agent-browser-benchmark
+
+## Elsewhere
+
+- [GitHub](https://github.com/umutc)
+- [LinkedIn](https://www.linkedin.com/in/05umutcelik/)

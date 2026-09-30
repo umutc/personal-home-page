@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en-US">
+    <title>Umut Celik: Writing</title>
+    <subtitle>Notes and measurements from building with AI agents, browsers and scraping at scale.</subtitle>
+    <link href="https://umutcelik.com.tr/blog/feed.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://umutcelik.com.tr/blog/" rel="alternate" type="text/html"/>
+    <id>https://umutcelik.com.tr/blog/</id>
+    <updated>2026-09-30T00:00:00Z</updated>
+    <author>
+        <name>Umut Celik</name>
+        <uri>https://umutcelik.com.tr/</uri>
+    </author>
+    <entry>
+        <title>Five ways to drive a browser</title>
+        <link href="https://umutcelik.com.tr/blog/five-ways-to-drive-a-browser/" rel="alternate" type="text/html"/>
+        <id>https://umutcelik.com.tr/blog/five-ways-to-drive-a-browser/</id>
+        <published>2026-09-30T00:00:00Z</published>
+        <updated>2026-09-30T00:00:00Z</updated>
+        <summary>I ran the same Claude Code agent through Claude in Chrome, Safari's new MCP server, Playwright on Chrome and WebKit, and Orca's built-in browser: 670 runs, with every transcript published.</summary>
+    </entry>
+</feed>

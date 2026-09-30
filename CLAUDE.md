@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Personal portfolio site for Umut Çelik at https://umutcelik.com.tr. Static HTML/CSS, no build step, deployed via GitHub Pages on every push to `main`.
+Personal portfolio site for Umut Celik at https://umutcelik.com.tr. Static HTML/CSS, no build step, deployed via GitHub Pages on every push to `main`.
 
 ## Development Workflow
 
@@ -30,13 +30,14 @@ python3 -m http.server 8000
 
 **GitHub Pages is the only live target.** Configured via `.github/workflows/static.yml`:
 - Triggers on push to `main` (or via `workflow_dispatch`)
-- No build — uploads the repo root as the Pages artifact
+- No build. The workflow copies an explicit allowlist of site files into `_site/` and uploads only that folder, so CLAUDE.md, README.md, scripts/ and editor config are never served. A new public file must be added to that `cp` line.
+- After deploy the workflow pings IndexNow (Bing, and through it ChatGPT search and Copilot) with every URL in `sitemap.xml`; the key file is the `<hex>.txt` at the repo root.
 - Takes ~1-2 minutes; watch with `gh run list -R umutc/personal-home-page`
 
 ### DNS / domain (do not change)
 
 - Custom domain `umutcelik.com.tr` is set in GitHub Pages Settings (no `CNAME` file in repo)
-- Route53 hosted zone `Z06846003RPNEE6EG5Y01` (AWS profile `personal`, account 585576670327)
+- Route53 hosted zone `Z06846003RPNEE6EG5Y01` (AWS profile `personal`)
 - A records point to GitHub Pages IPs `185.199.108-111.153`
 - `www` CNAME → `umutc.github.io`
 - HTTPS via Let's Encrypt, provisioned automatically by GitHub Pages
@@ -48,6 +49,7 @@ The old AWS Amplify app (`d2ktjps5ul2e7i`, eu-west-1) and ACM validation CNAMEs 
 ## Content rules
 
 - Content is English (job market is US). Comments, commits, PR messages: English.
+- The public name is "Umut Celik" (ASCII, no Ç) everywhere: titles, headings, alt text, structured data, OG images, favicon. The only exception is the invisible JSON-LD `alternateName`, which lets searches for the Turkish spelling resolve to the same person.
 - Keep it tight. No skill bars, no "hire me" buttons, no auto-play anything, no testimonials carousel.
 - Do not mention visa / sponsorship / F-1 / CPT / OPT on the public site. Those conversations belong after recruiter interest is established.
 - Phone number stays off the site — page HTML AND the hosted resume PDF, no exceptions. The hosted PDF is built from carrier's `umutcelik-public-2026.json` spec (hide_phone: true). The phone-visible generic resume (`umutcelik-general-2026.json`) is only sent directly in applications, never hosted here.
@@ -56,7 +58,7 @@ The old AWS Amplify app (`d2ktjps5ul2e7i`, eu-west-1) and ACM validation CNAMEs 
 
 ## Tech guardrails
 
-- No JS unless a feature genuinely needs it (JSON-LD data blocks are fine). New posts reuse `post.css`; add the post to `blog/index.html`, the homepage Writing section and `sitemap.xml`.
+- No JS unless a feature genuinely needs it (JSON-LD data blocks are fine). New posts reuse `post.css`. For each new post: add it to `blog/index.html` (and its Blog JSON-LD), the homepage Writing panel, `blog/feed.xml`, `sitemap.xml` and `llms.txt`; add an entry to `POSTS` in `scripts/build-og.py` and regenerate the OG images; link the author to the `#person` @id.
 - System font stack (no Google Fonts, no web fonts). Page should render before first paint.
 - Lighthouse target: 100/100/100/100. If a change drops any score, revert or fix.
 - No external analytics beacon currently. If added later, prefer Plausible over GA4.
