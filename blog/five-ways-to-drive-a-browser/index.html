@@ -40,131 +40,417 @@
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <main id="main">
+    <header class="wrap">
         <nav class="site-nav" aria-label="Site">
             <a href="/">Umut Çelik</a>
             <a href="/blog/">Writing</a>
         </nav>
+    </header>
 
+    <main id="main" class="wrap">
         <article>
-            <header class="post-header">
-                <h1>Five ways to drive a browser</h1>
-                <p class="dek">I ran the same Claude Code agent through Claude in Chrome, Safari's new MCP server, Playwright on Chrome and WebKit, and Orca's built-in browser. 670 runs later, every surface could do the job. What separated them was cost, and a handful of sharp edges.</p>
-                <p class="meta"><time datetime="2026-09-30">September 30, 2026</time> · Code and every raw transcript: <a href="https://github.com/umutc/agent-browser-benchmark">github.com/umutc/agent-browser-benchmark</a></p>
+            <header class="lede">
+                <div>
+                    <h1>Five ways to drive a browser</h1>
+                    <p class="meta"><time datetime="2026-09-30">September 30, 2026</time> · Code and every raw transcript: <a href="https://github.com/umutc/agent-browser-benchmark">github.com/umutc/agent-browser-benchmark</a></p>
+                    <p class="dek">I ran the same Claude Code agent through Claude in Chrome, Safari's new MCP server, Playwright on Chrome and WebKit, and Orca's built-in browser. 670 runs later, every surface could do the job. What separated them was cost, and a handful of sharp edges.</p>
+                    <p class="intro">Safari 27 shipped an MCP server, which gave me a fifth way to let a coding agent use a browser. I already had Claude in Chrome, Playwright's MCP server, and the browser built into Orca, the tool I run my agents in. I did not want to pick one by feel, so I built a benchmark: the same agent, the same model, the same prompts, one browser surface per run, and a server that checks every answer against what actually happened on the page.</p>
+                </div>
+
+                <section class="verdict" aria-labelledby="use-now">
+                    <h2 id="use-now">What I use now</h2>
+                    <p>For agent work in a clean browser, such as tests, scraping and form automation, I default to Playwright's MCP server. It never failed, and the engine is a flag. When token cost matters and the page has no native dialogs or drags, Safari's MCP server is surprisingly good. Claude in Chrome is for the times I need my own signed-in session, and I budget twice the tokens for it.</p>
+                    <ul class="picks" aria-label="Summary of the picks">
+                        <li>
+                            <span><span class="nm v2"><span class="sw" aria-hidden="true"></span>Playwright · Chrome</span><span class="nm v5"><span class="sw" aria-hidden="true"></span>Playwright · WebKit</span></span>
+                            <span class="use">default</span>
+                        </li>
+                        <li>
+                            <span class="nm v4"><span class="sw" aria-hidden="true"></span>Safari MCP</span>
+                            <span class="use">when tokens matter</span>
+                        </li>
+                        <li>
+                            <span class="nm v1"><span class="sw" aria-hidden="true"></span>Claude in Chrome</span>
+                            <span class="use">my signed-in session</span>
+                        </li>
+                    </ul>
+                </section>
             </header>
 
-            <div class="post">
-                <p>Safari 27 shipped an MCP server, which gave me a fifth way to let a coding agent use a browser. I already had Claude in Chrome, Playwright's MCP server, and the browser built into Orca, the tool I run my agents in. I did not want to pick one by feel, so I built a benchmark: the same agent, the same model, the same prompts, one browser surface per run, and a server that checks every answer against what actually happened on the page.</p>
+            <section class="section-first" aria-labelledby="results">
+                <div class="board-head">
+                    <h2 id="results">Results</h2>
+                    <p aria-hidden="true">670 runs, September 29–30, 2026 · <b>bold</b> = best in column</p>
+                </div>
+                <div class="scroll board-wrap">
+                    <table class="board">
+                        <caption class="sr-only">670 runs, September 29–30, 2026</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Surface</th>
+                                <th scope="col">Passed<span>of 131 runs</span></th>
+                                <th scope="col">Probes<span>of 22</span></th>
+                                <th scope="col">Time<span>median / run</span></th>
+                                <th scope="col">Input<span>median / run</span></th>
+                                <th scope="col">Fixed<span>before any tool</span></th>
+                                <th scope="col">Cost<span>134 runs</span></th>
+                                <th scope="col">Runs dropped<span>task: passes / runs</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="v1">
+                                <th scope="row"><span class="nm"><span class="sw" aria-hidden="true"></span>Claude in Chrome</span></th>
+                                <td class="m" data-label="Passed, of 131 runs">126/131</td>
+                                <td class="m" data-label="Probes, of 22">20/22</td>
+                                <td class="m" data-label="Time, median / run">26 s<span class="bar"><i style="--w:1"></i></span></td>
+                                <td class="m" data-label="Input, median / run">122k</td>
+                                <td class="m" data-label="Fixed, before any tool">15.7k<span class="bar"><i style="--w:1"></i></span></td>
+                                <td class="m" data-label="Cost, 134 runs">$22.5<span class="bar"><i style="--w:1"></i></span></td>
+                                <td class="dropped" data-label="Runs dropped (task: passes / runs)"><ul><li>HttpOnly cookie 0/3</li><li>print media 1/3</li></ul></td>
+                            </tr>
+                            <tr class="v2">
+                                <th scope="row"><span class="nm"><span class="sw" aria-hidden="true"></span>Playwright · Chrome</span></th>
+                                <td class="m" data-label="Passed, of 131 runs"><b>131/131</b></td>
+                                <td class="m" data-label="Probes, of 22"><b>22/22</b></td>
+                                <td class="m" data-label="Time, median / run"><b>13 s</b><span class="bar"><i style="--w:.5"></i></span></td>
+                                <td class="m" data-label="Input, median / run">57k</td>
+                                <td class="m" data-label="Fixed, before any tool">10.6k<span class="bar"><i style="--w:.675"></i></span></td>
+                                <td class="m" data-label="Cost, 134 runs">$10.9<span class="bar"><i style="--w:.484"></i></span></td>
+                                <td class="dropped" data-label="Runs dropped (task: passes / runs)"><span class="none">none</span></td>
+                            </tr>
+                            <tr class="v3">
+                                <th scope="row"><span class="nm"><span class="sw" aria-hidden="true"></span>Orca browser</span></th>
+                                <td class="m" data-label="Passed, of 131 runs">126/131</td>
+                                <td class="m" data-label="Probes, of 22">20/22</td>
+                                <td class="m" data-label="Time, median / run"><b>13 s</b><span class="bar"><i style="--w:.5"></i></span></td>
+                                <td class="m" data-label="Input, median / run"><b>33k</b></td>
+                                <td class="m" data-label="Fixed, before any tool"><b>6.4k</b><span class="bar"><i style="--w:.408"></i></span></td>
+                                <td class="m" data-label="Cost, 134 runs">$14.9<span class="bar"><i style="--w:.662"></i></span></td>
+                                <td class="dropped" data-label="Runs dropped (task: passes / runs)"><ul><li>confirm() 1/3</li><li>print media 0/3</li></ul></td>
+                            </tr>
+                            <tr class="v4">
+                                <th scope="row"><span class="nm"><span class="sw" aria-hidden="true"></span>Safari MCP</span></th>
+                                <td class="m" data-label="Passed, of 131 runs">127/131</td>
+                                <td class="m" data-label="Probes, of 22">21/22</td>
+                                <td class="m" data-label="Time, median / run"><b>13 s</b><span class="bar"><i style="--w:.5"></i></span></td>
+                                <td class="m" data-label="Input, median / run">38k</td>
+                                <td class="m" data-label="Fixed, before any tool">8.5k<span class="bar"><i style="--w:.541"></i></span></td>
+                                <td class="m" data-label="Cost, 134 runs"><b>$10.7</b><span class="bar"><i style="--w:.476"></i></span></td>
+                                <td class="dropped" data-label="Runs dropped (task: passes / runs)"><ul><li>confirm() 0/3</li><li>kanban drag 4/5</li></ul></td>
+                            </tr>
+                            <tr class="v5">
+                                <th scope="row"><span class="nm"><span class="sw" aria-hidden="true"></span>Playwright · WebKit</span></th>
+                                <td class="m" data-label="Passed, of 131 runs"><b>131/131</b></td>
+                                <td class="m" data-label="Probes, of 22"><b>22/22</b></td>
+                                <td class="m" data-label="Time, median / run"><b>13 s</b><span class="bar"><i style="--w:.5"></i></span></td>
+                                <td class="m" data-label="Input, median / run">57k</td>
+                                <td class="m" data-label="Fixed, before any tool">10.6k<span class="bar"><i style="--w:.675"></i></span></td>
+                                <td class="m" data-label="Cost, 134 runs">$11.6<span class="bar"><i style="--w:.516"></i></span></td>
+                                <td class="dropped" data-label="Runs dropped (task: passes / runs)"><span class="none">none</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-                <h2>The setup</h2>
-                <p>Every run is a fresh <code>claude -p</code> process with exactly one browser surface. <code>--strict-mcp-config</code> loads a single MCP server, the only built-in tool is <code>Read</code>, and <code>--setting-sources project</code> keeps my personal instructions out of the run. Without Bash or WebFetch, the agent cannot quietly <code>curl</code> the page instead of using the browser. Orca's browser is a command-line tool, so that lane gets Bash restricted to <code>orca</code> browser commands and nothing else.</p>
+                <div class="board-foot prose">
+                    <p class="fine"><em>Probes</em> counts capability probes passed in at least two of three runs. <em>Time</em> and <em>Input</em> are medians per run; <em>Fixed</em> is the input a reply costs before any tool is used. Cost is the list-price equivalent Claude Code reports for each surface's 134 runs; I ran on a Max subscription, and the whole benchmark used about 4% of a week's allowance. Bars are drawn to the largest value in each column.</p>
+                </div>
 
-                <div class="table-wrap">
-                    <table>
+                <div class="charts">
+                    <figure class="hchart">
+                        <figcaption>Input tokens per run</figcaption>
+                        <ul class="hbars">
+                            <li class="v1"><span class="hb-name">Claude in Chrome</span><span class="hb-track"><span class="hb-bar" style="--w:.8714"></span><span class="hb-val">122k</span></span></li>
+                            <li class="v2"><span class="hb-name">Playwright · Chrome</span><span class="hb-track"><span class="hb-bar" style="--w:.4086"></span><span class="hb-val">57.2k</span></span></li>
+                            <li class="v3"><span class="hb-name">Orca browser</span><span class="hb-track"><span class="hb-bar" style="--w:.2343"></span><span class="hb-val">32.8k</span></span></li>
+                            <li class="v4"><span class="hb-name">Safari MCP</span><span class="hb-track"><span class="hb-bar" style="--w:.2693"></span><span class="hb-val">37.7k</span></span></li>
+                            <li class="v5"><span class="hb-name">Playwright · WebKit</span><span class="hb-track"><span class="hb-bar" style="--w:.4064"></span><span class="hb-val">56.9k</span></span></li>
+                        </ul>
+                        <div class="hb-axis" aria-hidden="true"><span style="--x:0">0k</span><span style="--x:.25">35k</span><span style="--x:.5">70k</span><span style="--x:.75">105k</span><span style="--x:1">140k</span></div>
+                        <p class="note">Median over probes, realistic tasks and bug hunts.</p>
+                    </figure>
+                    <figure class="hchart">
+                        <figcaption>Time per realistic task</figcaption>
+                        <ul class="hbars">
+                            <li class="v1"><span class="hb-name">Claude in Chrome</span><span class="hb-track"><span class="hb-bar" style="--w:.975"></span><span class="hb-val">39 s</span></span></li>
+                            <li class="v2"><span class="hb-name">Playwright · Chrome</span><span class="hb-track"><span class="hb-bar" style="--w:.5"></span><span class="hb-val">20 s</span></span></li>
+                            <li class="v3"><span class="hb-name">Orca browser</span><span class="hb-track"><span class="hb-bar" style="--w:.675"></span><span class="hb-val">27 s</span></span></li>
+                            <li class="v4"><span class="hb-name">Safari MCP</span><span class="hb-track"><span class="hb-bar" style="--w:.55"></span><span class="hb-val">22 s</span></span></li>
+                            <li class="v5"><span class="hb-name">Playwright · WebKit</span><span class="hb-track"><span class="hb-bar" style="--w:.525"></span><span class="hb-val">21 s</span></span></li>
+                        </ul>
+                        <div class="hb-axis" aria-hidden="true"><span style="--x:0">0 s</span><span style="--x:.25">10 s</span><span style="--x:.5">20 s</span><span style="--x:.75">30 s</span><span style="--x:1">40 s</span></div>
+                        <p class="note">Median seconds for the eight multi-step tasks.</p>
+                    </figure>
+                </div>
+
+                <nav class="toc" aria-label="On this page">
+                    <span>Evidence</span>
+                    <a href="#learned">What I learned</a>
+                    <a href="#setup">The setup</a>
+                    <a href="#wrong">What went wrong while measuring</a>
+                    <a href="#limits">Limits</a>
+                    <a href="#sources">Sources</a>
+                </nav>
+            </section>
+
+            <section aria-labelledby="learned">
+                <h2 id="learned">What I learned</h2>
+                <div class="prose">
+                    <h3>Every surface can do the job. The difference is cost.</h3>
+                    <p>No surface fell below 96%, and Playwright passed all 131 runs on both engines. The spread is in time and tokens: the most expensive surface needed twice the time and nearly four times the input tokens of the cheapest.</p>
+                </div>
+
+                <figure class="runlog">
+                    <figcaption><span id="runlog-title">Every run, one mark</span><span class="legend" aria-hidden="true"><span><i></i>passed</span><span><i class="hollow"></i>failed</span></span></figcaption>
+                    <div class="scroll" role="region" tabindex="0" aria-labelledby="runlog-title">
+                        <svg class="runlog-svg" viewBox="0 0 1032 326" role="img" aria-labelledby="runlog-svg-title runlog-svg-desc">
+                        <title id="runlog-svg-title">Every run, one mark</title>
+                        <desc id="runlog-svg-desc">One mark per run, 134 per surface. Every run passed except: Claude in Chrome, HttpOnly cookie 0 of 3 and print media 1 of 3; Orca browser, JS dialogs 1 of 3 and print media 0 of 3; Safari MCP, JS dialogs 0 of 3 and kanban drag 4 of 5. Playwright on Chrome and on WebKit passed all 131 scored runs.</desc>
+                        <text class="tier" x="184.0" y="14" text-anchor="end">baseline</text>
+                        <line class="bracket" x1="170.0" x2="184.0" y1="23" y2="23"/>
+                        <text class="tier" x="197.0" y="14">22 capability probes × 3</text>
+                        <line class="bracket" x1="197.0" x2="578.5" y1="23" y2="23"/>
+                        <text class="tier" x="591.5" y="14">8 realistic tasks × 5</text>
+                        <line class="bracket" x1="591.5" x2="808.0" y1="23" y2="23"/>
+                        <text class="tier" x="821.0" y="14">5 bug hunts × 5</text>
+                        <line class="bracket" x1="821.0" x2="955.0" y1="23" y2="23"/>
+                        <text class="tier" x="1030" y="14" text-anchor="end">passed</text>
+                        <text class="label" x="158" y="62" text-anchor="end">Claude in Chrome</text>
+                        <path class="base" d="M170,44h4v26h-4zM175,44h4v26h-4zM180,44h4v26h-4z"/>
+                        <path class="f1" d="M197,44h4v26h-4zM202,44h4v26h-4zM207,44h4v26h-4zM214.5,44h4v26h-4zM219.5,44h4v26h-4zM224.5,44h4v26h-4zM232,44h4v26h-4zM237,44h4v26h-4zM242,44h4v26h-4zM249.5,44h4v26h-4zM254.5,44h4v26h-4zM259.5,44h4v26h-4zM284.5,44h4v26h-4zM289.5,44h4v26h-4zM294.5,44h4v26h-4zM302,44h4v26h-4zM307,44h4v26h-4zM312,44h4v26h-4zM319.5,44h4v26h-4zM324.5,44h4v26h-4zM329.5,44h4v26h-4zM337,44h4v26h-4zM342,44h4v26h-4zM347,44h4v26h-4zM354.5,44h4v26h-4zM359.5,44h4v26h-4zM364.5,44h4v26h-4zM372,44h4v26h-4zM377,44h4v26h-4zM382,44h4v26h-4zM389.5,44h4v26h-4zM394.5,44h4v26h-4zM399.5,44h4v26h-4zM407,44h4v26h-4zM412,44h4v26h-4zM417,44h4v26h-4zM424.5,44h4v26h-4zM429.5,44h4v26h-4zM434.5,44h4v26h-4zM442,44h4v26h-4zM447,44h4v26h-4zM452,44h4v26h-4zM459.5,44h4v26h-4zM477,44h4v26h-4zM482,44h4v26h-4zM487,44h4v26h-4zM494.5,44h4v26h-4zM499.5,44h4v26h-4zM504.5,44h4v26h-4zM512,44h4v26h-4zM517,44h4v26h-4zM522,44h4v26h-4zM529.5,44h4v26h-4zM534.5,44h4v26h-4zM539.5,44h4v26h-4zM547,44h4v26h-4zM552,44h4v26h-4zM557,44h4v26h-4zM564.5,44h4v26h-4zM569.5,44h4v26h-4zM574.5,44h4v26h-4zM591.5,44h4v26h-4zM596.5,44h4v26h-4zM601.5,44h4v26h-4zM606.5,44h4v26h-4zM611.5,44h4v26h-4zM619,44h4v26h-4zM624,44h4v26h-4zM629,44h4v26h-4zM634,44h4v26h-4zM639,44h4v26h-4zM646.5,44h4v26h-4zM651.5,44h4v26h-4zM656.5,44h4v26h-4zM661.5,44h4v26h-4zM666.5,44h4v26h-4zM674,44h4v26h-4zM679,44h4v26h-4zM684,44h4v26h-4zM689,44h4v26h-4zM694,44h4v26h-4zM701.5,44h4v26h-4zM706.5,44h4v26h-4zM711.5,44h4v26h-4zM716.5,44h4v26h-4zM721.5,44h4v26h-4zM729,44h4v26h-4zM734,44h4v26h-4zM739,44h4v26h-4zM744,44h4v26h-4zM749,44h4v26h-4zM756.5,44h4v26h-4zM761.5,44h4v26h-4zM766.5,44h4v26h-4zM771.5,44h4v26h-4zM776.5,44h4v26h-4zM784,44h4v26h-4zM789,44h4v26h-4zM794,44h4v26h-4zM799,44h4v26h-4zM804,44h4v26h-4zM821,44h4v26h-4zM826,44h4v26h-4zM831,44h4v26h-4zM836,44h4v26h-4zM841,44h4v26h-4zM848.5,44h4v26h-4zM853.5,44h4v26h-4zM858.5,44h4v26h-4zM863.5,44h4v26h-4zM868.5,44h4v26h-4zM876,44h4v26h-4zM881,44h4v26h-4zM886,44h4v26h-4zM891,44h4v26h-4zM896,44h4v26h-4zM903.5,44h4v26h-4zM908.5,44h4v26h-4zM913.5,44h4v26h-4zM918.5,44h4v26h-4zM923.5,44h4v26h-4zM931,44h4v26h-4zM936,44h4v26h-4zM941,44h4v26h-4zM946,44h4v26h-4zM951,44h4v26h-4z"/>
+                        <rect class="x1" x="267.75" y="44.75" width="2.5" height="24.5"/>
+                        <rect class="x1" x="272.75" y="44.75" width="2.5" height="24.5"/>
+                        <rect class="x1" x="277.75" y="44.75" width="2.5" height="24.5"/>
+                        <path class="fail-tick" d="M267.0,74H281.0M267.0,74v6"/>
+                        <text class="anno" x="272.0" y="88">HttpOnly cookie 0/3</text>
+                        <rect class="x1" x="465.25" y="44.75" width="2.5" height="24.5"/>
+                        <rect class="x1" x="470.25" y="44.75" width="2.5" height="24.5"/>
+                        <path class="fail-tick" d="M464.5,74H473.5M464.5,74v6"/>
+                        <text class="anno" x="469.5" y="88">print media 1/3</text>
+                        <text class="value" x="1030" y="62" text-anchor="end">126/131</text>
+                        <text class="label" x="158" y="120" text-anchor="end">Playwright · Chrome</text>
+                        <path class="base" d="M170,102h4v26h-4zM175,102h4v26h-4zM180,102h4v26h-4z"/>
+                        <path class="f2" d="M197,102h4v26h-4zM202,102h4v26h-4zM207,102h4v26h-4zM214.5,102h4v26h-4zM219.5,102h4v26h-4zM224.5,102h4v26h-4zM232,102h4v26h-4zM237,102h4v26h-4zM242,102h4v26h-4zM249.5,102h4v26h-4zM254.5,102h4v26h-4zM259.5,102h4v26h-4zM267,102h4v26h-4zM272,102h4v26h-4zM277,102h4v26h-4zM284.5,102h4v26h-4zM289.5,102h4v26h-4zM294.5,102h4v26h-4zM302,102h4v26h-4zM307,102h4v26h-4zM312,102h4v26h-4zM319.5,102h4v26h-4zM324.5,102h4v26h-4zM329.5,102h4v26h-4zM337,102h4v26h-4zM342,102h4v26h-4zM347,102h4v26h-4zM354.5,102h4v26h-4zM359.5,102h4v26h-4zM364.5,102h4v26h-4zM372,102h4v26h-4zM377,102h4v26h-4zM382,102h4v26h-4zM389.5,102h4v26h-4zM394.5,102h4v26h-4zM399.5,102h4v26h-4zM407,102h4v26h-4zM412,102h4v26h-4zM417,102h4v26h-4zM424.5,102h4v26h-4zM429.5,102h4v26h-4zM434.5,102h4v26h-4zM442,102h4v26h-4zM447,102h4v26h-4zM452,102h4v26h-4zM459.5,102h4v26h-4zM464.5,102h4v26h-4zM469.5,102h4v26h-4zM477,102h4v26h-4zM482,102h4v26h-4zM487,102h4v26h-4zM494.5,102h4v26h-4zM499.5,102h4v26h-4zM504.5,102h4v26h-4zM512,102h4v26h-4zM517,102h4v26h-4zM522,102h4v26h-4zM529.5,102h4v26h-4zM534.5,102h4v26h-4zM539.5,102h4v26h-4zM547,102h4v26h-4zM552,102h4v26h-4zM557,102h4v26h-4zM564.5,102h4v26h-4zM569.5,102h4v26h-4zM574.5,102h4v26h-4zM591.5,102h4v26h-4zM596.5,102h4v26h-4zM601.5,102h4v26h-4zM606.5,102h4v26h-4zM611.5,102h4v26h-4zM619,102h4v26h-4zM624,102h4v26h-4zM629,102h4v26h-4zM634,102h4v26h-4zM639,102h4v26h-4zM646.5,102h4v26h-4zM651.5,102h4v26h-4zM656.5,102h4v26h-4zM661.5,102h4v26h-4zM666.5,102h4v26h-4zM674,102h4v26h-4zM679,102h4v26h-4zM684,102h4v26h-4zM689,102h4v26h-4zM694,102h4v26h-4zM701.5,102h4v26h-4zM706.5,102h4v26h-4zM711.5,102h4v26h-4zM716.5,102h4v26h-4zM721.5,102h4v26h-4zM729,102h4v26h-4zM734,102h4v26h-4zM739,102h4v26h-4zM744,102h4v26h-4zM749,102h4v26h-4zM756.5,102h4v26h-4zM761.5,102h4v26h-4zM766.5,102h4v26h-4zM771.5,102h4v26h-4zM776.5,102h4v26h-4zM784,102h4v26h-4zM789,102h4v26h-4zM794,102h4v26h-4zM799,102h4v26h-4zM804,102h4v26h-4zM821,102h4v26h-4zM826,102h4v26h-4zM831,102h4v26h-4zM836,102h4v26h-4zM841,102h4v26h-4zM848.5,102h4v26h-4zM853.5,102h4v26h-4zM858.5,102h4v26h-4zM863.5,102h4v26h-4zM868.5,102h4v26h-4zM876,102h4v26h-4zM881,102h4v26h-4zM886,102h4v26h-4zM891,102h4v26h-4zM896,102h4v26h-4zM903.5,102h4v26h-4zM908.5,102h4v26h-4zM913.5,102h4v26h-4zM918.5,102h4v26h-4zM923.5,102h4v26h-4zM931,102h4v26h-4zM936,102h4v26h-4zM941,102h4v26h-4zM946,102h4v26h-4zM951,102h4v26h-4z"/>
+                        <text class="value" x="1030" y="120" text-anchor="end">131/131</text>
+                        <text class="label" x="158" y="178" text-anchor="end">Orca browser</text>
+                        <path class="base" d="M170,160h4v26h-4zM175,160h4v26h-4zM180,160h4v26h-4z"/>
+                        <path class="f3" d="M197,160h4v26h-4zM202,160h4v26h-4zM207,160h4v26h-4zM214.5,160h4v26h-4zM219.5,160h4v26h-4zM224.5,160h4v26h-4zM232,160h4v26h-4zM237,160h4v26h-4zM242,160h4v26h-4zM249.5,160h4v26h-4zM254.5,160h4v26h-4zM259.5,160h4v26h-4zM267,160h4v26h-4zM272,160h4v26h-4zM277,160h4v26h-4zM284.5,160h4v26h-4zM302,160h4v26h-4zM307,160h4v26h-4zM312,160h4v26h-4zM319.5,160h4v26h-4zM324.5,160h4v26h-4zM329.5,160h4v26h-4zM337,160h4v26h-4zM342,160h4v26h-4zM347,160h4v26h-4zM354.5,160h4v26h-4zM359.5,160h4v26h-4zM364.5,160h4v26h-4zM372,160h4v26h-4zM377,160h4v26h-4zM382,160h4v26h-4zM389.5,160h4v26h-4zM394.5,160h4v26h-4zM399.5,160h4v26h-4zM407,160h4v26h-4zM412,160h4v26h-4zM417,160h4v26h-4zM424.5,160h4v26h-4zM429.5,160h4v26h-4zM434.5,160h4v26h-4zM442,160h4v26h-4zM447,160h4v26h-4zM452,160h4v26h-4zM477,160h4v26h-4zM482,160h4v26h-4zM487,160h4v26h-4zM494.5,160h4v26h-4zM499.5,160h4v26h-4zM504.5,160h4v26h-4zM512,160h4v26h-4zM517,160h4v26h-4zM522,160h4v26h-4zM529.5,160h4v26h-4zM534.5,160h4v26h-4zM539.5,160h4v26h-4zM547,160h4v26h-4zM552,160h4v26h-4zM557,160h4v26h-4zM564.5,160h4v26h-4zM569.5,160h4v26h-4zM574.5,160h4v26h-4zM591.5,160h4v26h-4zM596.5,160h4v26h-4zM601.5,160h4v26h-4zM606.5,160h4v26h-4zM611.5,160h4v26h-4zM619,160h4v26h-4zM624,160h4v26h-4zM629,160h4v26h-4zM634,160h4v26h-4zM639,160h4v26h-4zM646.5,160h4v26h-4zM651.5,160h4v26h-4zM656.5,160h4v26h-4zM661.5,160h4v26h-4zM666.5,160h4v26h-4zM674,160h4v26h-4zM679,160h4v26h-4zM684,160h4v26h-4zM689,160h4v26h-4zM694,160h4v26h-4zM701.5,160h4v26h-4zM706.5,160h4v26h-4zM711.5,160h4v26h-4zM716.5,160h4v26h-4zM721.5,160h4v26h-4zM729,160h4v26h-4zM734,160h4v26h-4zM739,160h4v26h-4zM744,160h4v26h-4zM749,160h4v26h-4zM756.5,160h4v26h-4zM761.5,160h4v26h-4zM766.5,160h4v26h-4zM771.5,160h4v26h-4zM776.5,160h4v26h-4zM784,160h4v26h-4zM789,160h4v26h-4zM794,160h4v26h-4zM799,160h4v26h-4zM804,160h4v26h-4zM821,160h4v26h-4zM826,160h4v26h-4zM831,160h4v26h-4zM836,160h4v26h-4zM841,160h4v26h-4zM848.5,160h4v26h-4zM853.5,160h4v26h-4zM858.5,160h4v26h-4zM863.5,160h4v26h-4zM868.5,160h4v26h-4zM876,160h4v26h-4zM881,160h4v26h-4zM886,160h4v26h-4zM891,160h4v26h-4zM896,160h4v26h-4zM903.5,160h4v26h-4zM908.5,160h4v26h-4zM913.5,160h4v26h-4zM918.5,160h4v26h-4zM923.5,160h4v26h-4zM931,160h4v26h-4zM936,160h4v26h-4zM941,160h4v26h-4zM946,160h4v26h-4zM951,160h4v26h-4z"/>
+                        <rect class="x3" x="290.25" y="160.75" width="2.5" height="24.5"/>
+                        <rect class="x3" x="295.25" y="160.75" width="2.5" height="24.5"/>
+                        <path class="fail-tick" d="M289.5,190H298.5M289.5,190v6"/>
+                        <text class="anno" x="294.5" y="204">JS dialogs 1/3</text>
+                        <rect class="x3" x="460.25" y="160.75" width="2.5" height="24.5"/>
+                        <rect class="x3" x="465.25" y="160.75" width="2.5" height="24.5"/>
+                        <rect class="x3" x="470.25" y="160.75" width="2.5" height="24.5"/>
+                        <path class="fail-tick" d="M459.5,190H473.5M459.5,190v6"/>
+                        <text class="anno" x="464.5" y="204">print media 0/3</text>
+                        <text class="value" x="1030" y="178" text-anchor="end">126/131</text>
+                        <text class="label" x="158" y="236" text-anchor="end">Safari MCP</text>
+                        <path class="base" d="M170,218h4v26h-4zM175,218h4v26h-4zM180,218h4v26h-4z"/>
+                        <path class="f4" d="M197,218h4v26h-4zM202,218h4v26h-4zM207,218h4v26h-4zM214.5,218h4v26h-4zM219.5,218h4v26h-4zM224.5,218h4v26h-4zM232,218h4v26h-4zM237,218h4v26h-4zM242,218h4v26h-4zM249.5,218h4v26h-4zM254.5,218h4v26h-4zM259.5,218h4v26h-4zM267,218h4v26h-4zM272,218h4v26h-4zM277,218h4v26h-4zM302,218h4v26h-4zM307,218h4v26h-4zM312,218h4v26h-4zM319.5,218h4v26h-4zM324.5,218h4v26h-4zM329.5,218h4v26h-4zM337,218h4v26h-4zM342,218h4v26h-4zM347,218h4v26h-4zM354.5,218h4v26h-4zM359.5,218h4v26h-4zM364.5,218h4v26h-4zM372,218h4v26h-4zM377,218h4v26h-4zM382,218h4v26h-4zM389.5,218h4v26h-4zM394.5,218h4v26h-4zM399.5,218h4v26h-4zM407,218h4v26h-4zM412,218h4v26h-4zM417,218h4v26h-4zM424.5,218h4v26h-4zM429.5,218h4v26h-4zM434.5,218h4v26h-4zM442,218h4v26h-4zM447,218h4v26h-4zM452,218h4v26h-4zM459.5,218h4v26h-4zM464.5,218h4v26h-4zM469.5,218h4v26h-4zM477,218h4v26h-4zM482,218h4v26h-4zM487,218h4v26h-4zM494.5,218h4v26h-4zM499.5,218h4v26h-4zM504.5,218h4v26h-4zM512,218h4v26h-4zM517,218h4v26h-4zM522,218h4v26h-4zM529.5,218h4v26h-4zM534.5,218h4v26h-4zM539.5,218h4v26h-4zM547,218h4v26h-4zM552,218h4v26h-4zM557,218h4v26h-4zM564.5,218h4v26h-4zM569.5,218h4v26h-4zM574.5,218h4v26h-4zM591.5,218h4v26h-4zM596.5,218h4v26h-4zM601.5,218h4v26h-4zM606.5,218h4v26h-4zM611.5,218h4v26h-4zM619,218h4v26h-4zM624,218h4v26h-4zM629,218h4v26h-4zM634,218h4v26h-4zM639,218h4v26h-4zM646.5,218h4v26h-4zM651.5,218h4v26h-4zM656.5,218h4v26h-4zM661.5,218h4v26h-4zM666.5,218h4v26h-4zM674,218h4v26h-4zM679,218h4v26h-4zM684,218h4v26h-4zM689,218h4v26h-4zM701.5,218h4v26h-4zM706.5,218h4v26h-4zM711.5,218h4v26h-4zM716.5,218h4v26h-4zM721.5,218h4v26h-4zM729,218h4v26h-4zM734,218h4v26h-4zM739,218h4v26h-4zM744,218h4v26h-4zM749,218h4v26h-4zM756.5,218h4v26h-4zM761.5,218h4v26h-4zM766.5,218h4v26h-4zM771.5,218h4v26h-4zM776.5,218h4v26h-4zM784,218h4v26h-4zM789,218h4v26h-4zM794,218h4v26h-4zM799,218h4v26h-4zM804,218h4v26h-4zM821,218h4v26h-4zM826,218h4v26h-4zM831,218h4v26h-4zM836,218h4v26h-4zM841,218h4v26h-4zM848.5,218h4v26h-4zM853.5,218h4v26h-4zM858.5,218h4v26h-4zM863.5,218h4v26h-4zM868.5,218h4v26h-4zM876,218h4v26h-4zM881,218h4v26h-4zM886,218h4v26h-4zM891,218h4v26h-4zM896,218h4v26h-4zM903.5,218h4v26h-4zM908.5,218h4v26h-4zM913.5,218h4v26h-4zM918.5,218h4v26h-4zM923.5,218h4v26h-4zM931,218h4v26h-4zM936,218h4v26h-4zM941,218h4v26h-4zM946,218h4v26h-4zM951,218h4v26h-4z"/>
+                        <rect class="x4" x="285.25" y="218.75" width="2.5" height="24.5"/>
+                        <rect class="x4" x="290.25" y="218.75" width="2.5" height="24.5"/>
+                        <rect class="x4" x="295.25" y="218.75" width="2.5" height="24.5"/>
+                        <path class="fail-tick" d="M284.5,248H298.5M284.5,248v6"/>
+                        <text class="anno" x="289.5" y="262">JS dialogs 0/3</text>
+                        <rect class="x4" x="694.75" y="218.75" width="2.5" height="24.5"/>
+                        <path class="fail-tick" d="M694.0,248H698.0M694.0,248v6"/>
+                        <text class="anno" x="699.0" y="262">kanban drag 4/5</text>
+                        <text class="value" x="1030" y="236" text-anchor="end">127/131</text>
+                        <text class="label" x="158" y="294" text-anchor="end">Playwright · WebKit</text>
+                        <path class="base" d="M170,276h4v26h-4zM175,276h4v26h-4zM180,276h4v26h-4z"/>
+                        <path class="f5" d="M197,276h4v26h-4zM202,276h4v26h-4zM207,276h4v26h-4zM214.5,276h4v26h-4zM219.5,276h4v26h-4zM224.5,276h4v26h-4zM232,276h4v26h-4zM237,276h4v26h-4zM242,276h4v26h-4zM249.5,276h4v26h-4zM254.5,276h4v26h-4zM259.5,276h4v26h-4zM267,276h4v26h-4zM272,276h4v26h-4zM277,276h4v26h-4zM284.5,276h4v26h-4zM289.5,276h4v26h-4zM294.5,276h4v26h-4zM302,276h4v26h-4zM307,276h4v26h-4zM312,276h4v26h-4zM319.5,276h4v26h-4zM324.5,276h4v26h-4zM329.5,276h4v26h-4zM337,276h4v26h-4zM342,276h4v26h-4zM347,276h4v26h-4zM354.5,276h4v26h-4zM359.5,276h4v26h-4zM364.5,276h4v26h-4zM372,276h4v26h-4zM377,276h4v26h-4zM382,276h4v26h-4zM389.5,276h4v26h-4zM394.5,276h4v26h-4zM399.5,276h4v26h-4zM407,276h4v26h-4zM412,276h4v26h-4zM417,276h4v26h-4zM424.5,276h4v26h-4zM429.5,276h4v26h-4zM434.5,276h4v26h-4zM442,276h4v26h-4zM447,276h4v26h-4zM452,276h4v26h-4zM459.5,276h4v26h-4zM464.5,276h4v26h-4zM469.5,276h4v26h-4zM477,276h4v26h-4zM482,276h4v26h-4zM487,276h4v26h-4zM494.5,276h4v26h-4zM499.5,276h4v26h-4zM504.5,276h4v26h-4zM512,276h4v26h-4zM517,276h4v26h-4zM522,276h4v26h-4zM529.5,276h4v26h-4zM534.5,276h4v26h-4zM539.5,276h4v26h-4zM547,276h4v26h-4zM552,276h4v26h-4zM557,276h4v26h-4zM564.5,276h4v26h-4zM569.5,276h4v26h-4zM574.5,276h4v26h-4zM591.5,276h4v26h-4zM596.5,276h4v26h-4zM601.5,276h4v26h-4zM606.5,276h4v26h-4zM611.5,276h4v26h-4zM619,276h4v26h-4zM624,276h4v26h-4zM629,276h4v26h-4zM634,276h4v26h-4zM639,276h4v26h-4zM646.5,276h4v26h-4zM651.5,276h4v26h-4zM656.5,276h4v26h-4zM661.5,276h4v26h-4zM666.5,276h4v26h-4zM674,276h4v26h-4zM679,276h4v26h-4zM684,276h4v26h-4zM689,276h4v26h-4zM694,276h4v26h-4zM701.5,276h4v26h-4zM706.5,276h4v26h-4zM711.5,276h4v26h-4zM716.5,276h4v26h-4zM721.5,276h4v26h-4zM729,276h4v26h-4zM734,276h4v26h-4zM739,276h4v26h-4zM744,276h4v26h-4zM749,276h4v26h-4zM756.5,276h4v26h-4zM761.5,276h4v26h-4zM766.5,276h4v26h-4zM771.5,276h4v26h-4zM776.5,276h4v26h-4zM784,276h4v26h-4zM789,276h4v26h-4zM794,276h4v26h-4zM799,276h4v26h-4zM804,276h4v26h-4zM821,276h4v26h-4zM826,276h4v26h-4zM831,276h4v26h-4zM836,276h4v26h-4zM841,276h4v26h-4zM848.5,276h4v26h-4zM853.5,276h4v26h-4zM858.5,276h4v26h-4zM863.5,276h4v26h-4zM868.5,276h4v26h-4zM876,276h4v26h-4zM881,276h4v26h-4zM886,276h4v26h-4zM891,276h4v26h-4zM896,276h4v26h-4zM903.5,276h4v26h-4zM908.5,276h4v26h-4zM913.5,276h4v26h-4zM918.5,276h4v26h-4zM923.5,276h4v26h-4zM931,276h4v26h-4zM936,276h4v26h-4zM941,276h4v26h-4zM946,276h4v26h-4zM951,276h4v26h-4z"/>
+                        <text class="value" x="1030" y="294" text-anchor="end">131/131</text>
+                        </svg>
+                    </div>
+                    <p class="scroll-hint" aria-hidden="true">Chart scrolls sideways →</p>
+                    <p class="note">Pass counts per task from the run summary, grouped by tier; within a task, passes are drawn first. Baseline runs answer without tools and are not counted in the totals.</p>
+                </figure>
+
+                <details>
+                    <summary>Every task, pass count per surface <span>· 36 tasks, 4 tiers</span></summary>
+                    <div class="scroll" role="region" aria-label="Pass count per task and surface" tabindex="0">
+                        <table class="tasks">
+                            <caption class="fine">Passes / runs. Highlighted cells dropped at least one run; tasks with a drop are listed first in each tier.</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Task</th>
+                                    <th scope="col" class="v1"><span class="sw" aria-hidden="true"></span>Claude in Chrome</th>
+                                    <th scope="col" class="v2"><span class="sw" aria-hidden="true"></span>Playwright · Chrome</th>
+                                    <th scope="col" class="v3"><span class="sw" aria-hidden="true"></span>Orca browser</th>
+                                    <th scope="col" class="v4"><span class="sw" aria-hidden="true"></span>Safari MCP</th>
+                                    <th scope="col" class="v5"><span class="sw" aria-hidden="true"></span>Playwright · WebKit</th>
+                                </tr>
+                            </thead>
+                            <tbody><tr class="grp"><th scope="rowgroup" colspan="6">Capability probes, 3 runs each</th></tr>
+                            <tr><th scope="row">emulate print media</th><td class="n miss">1/3</td><td class="n">3/3</td><td class="n miss">0/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">HttpOnly cookie</th><td class="n miss">0/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">JS dialogs (confirm + prompt)</th><td class="n">3/3</td><td class="n">3/3</td><td class="n miss">1/3</td><td class="n miss">0/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">click</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">console messages</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">drag and drop (HTML5)</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">file download</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">file upload</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">form controls</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">hover</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">iframe (cross origin)</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">iframe (same origin)</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">infinite scroll</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">keyboard shortcut</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">network request body</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">new tab / popup</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">read text</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">resize viewport</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">run JavaScript</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">screenshot + vision (below the fold)</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">shadow DOM</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            <tr><th scope="row">type and submit</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            </tbody>
+                            <tbody><tr class="grp"><th scope="rowgroup" colspan="6">Realistic tasks, 5 runs each</th></tr>
+                            <tr><th scope="row">pointer-based drag and drop</th><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n miss">4/5</td><td class="n">5/5</td></tr>
+                            <tr><th scope="row">login + 2FA across tabs + settings</th><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td></tr>
+                            <tr><th scope="row">multi-field form with validation</th><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td></tr>
+                            <tr><th scope="row">multi-page data extraction</th><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td></tr>
+                            <tr><th scope="row">multi-step wizard + custom date picker</th><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td></tr>
+                            <tr><th scope="row">overlays, modals, toasts</th><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td></tr>
+                            <tr><th scope="row">paginated table aggregation</th><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td></tr>
+                            <tr><th scope="row">SPA filters + async results</th><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td></tr>
+                            </tbody>
+                            <tbody><tr class="grp"><th scope="rowgroup" colspan="6">Bug hunts, 5 runs each</th></tr>
+                            <tr><th scope="row">accessibility audit</th><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td></tr>
+                            <tr><th scope="row">engine-specific breakage</th><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td></tr>
+                            <tr><th scope="row">find console errors per action</th><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td></tr>
+                            <tr><th scope="row">find failing API calls</th><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td></tr>
+                            <tr><th scope="row">mobile layout bugs</th><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td><td class="n">5/5</td></tr>
+                            </tbody>
+                            <tbody><tr class="grp"><th scope="rowgroup" colspan="6">Baseline, no tools</th></tr>
+                            <tr><th scope="row">baseline</th><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td><td class="n">3/3</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="scroll-hint tasks-hint" aria-hidden="true">Table scrolls sideways →</p>
+                </details>
+
+                <ul class="lanes">
+                    <li class="lane">
+                        <div class="who"><span class="nm v1"><span class="sw" aria-hidden="true"></span>Claude in Chrome</span><small>Chrome 154, my own profile<br>extension</small></div>
+                        <div>
+                            <h3>Claude in Chrome costs about twice as much</h3>
+                            <p>A median run took 26 seconds and 122k input tokens, against 13 seconds and 33k to 57k for the other four. It reaches for screenshots more often (a median of 4.5 images per realistic task), its fixed context is the largest at 16k tokens, and each tool call round-trips through the extension. It also could not read an HttpOnly cookie in any run. None of this measures what it is actually for: driving my own browser, where I am already signed in. For that it is still the only option here.</p>
+                        </div>
+                    </li>
+                    <li class="lane">
+                        <div class="who"><span class="nm v4"><span class="sw" aria-hidden="true"></span>Safari MCP</span><small>Safari 27<br>safaridriver --mcp</small></div>
+                        <div>
+                            <h3>Safari MCP is the leanest, with two gaps</h3>
+                            <p>It was the cheapest surface overall and returned the most compact page reads, a median of 0.8 KB per probe. Two things are missing. A native <code>confirm()</code> left its click call hanging until the four-minute timeout, in all three dialog runs. And it has no press-move-release gesture, so on the kanban board the agent had to fake the drag by dispatching pointer events from page JavaScript. Only 70% of its passing interactions reached the page as real input (<code>event.isTrusted</code>), against 100% for every other surface.</p>
+                        </div>
+                    </li>
+                    <li class="lane">
+                        <div class="who"><span class="nm v3"><span class="sw" aria-hidden="true"></span>Orca browser</span><small>Chromium 150 (Electron)<br>orca CLI through Bash</small></div>
+                        <div>
+                            <h3>Orca's browser is fragile around the host app</h3>
+                            <p>A native <code>confirm()</code> dropped the Orca runtime connection, so every command after it failed; one of three runs got through with a workaround. <code>set media print</code> reported success without changing the media type. Its speed also depended on the Orca window itself: its viewport follows the panel size, and once the harness pre-opened a pinned tab and the workspace was on screen, its median run time halved.</p>
+                        </div>
+                    </li>
+                    <li class="lane">
+                        <div class="who">
+                            <span class="nm v2"><span class="sw" aria-hidden="true"></span>Playwright · Chrome</span>
+                            <span class="nm v5"><span class="sw" aria-hidden="true"></span>Playwright · WebKit</span>
+                            <small>@playwright/mcp 0.0.83</small>
+                        </div>
+                        <div>
+                            <h3>The interface matters more than the engine</h3>
+                            <p>Playwright on Chrome and on WebKit finished within a second of each other on every tier. The bug hunt built around engine differences came out exactly as the engines dictate: both WebKit surfaces found three broken widgets, because two of them call Chromium-only APIs, and all three Chromium surfaces found one.</p>
+                        </div>
+                    </li>
+                    <li class="lane">
+                        <div class="who">
+                            <span class="nm v1"><span class="sw" aria-hidden="true"></span>Claude in Chrome</span>
+                            <span class="nm v3"><span class="sw" aria-hidden="true"></span>Orca browser</span>
+                            <small>no print-media emulation</small>
+                        </div>
+                        <div>
+                            <h3>The agents said when they took a shortcut</h3>
+                            <p>Chrome and Orca have no way to emulate print media, so the agents improvised: one rewrote the page's print CSS and fired <code>beforeprint</code>, the other rendered a PDF to trigger the print handler. Both reached the right code and explained the workaround in their notes. The checker still fails those runs, because the task asked for real print media. They are the only five cases where an agent claimed success and failed.</p>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <section aria-labelledby="setup">
+                <h2 id="setup">The setup</h2>
+                <div class="setup-grid">
+                    <div class="prose">
+                        <p>Every run is a fresh <code>claude -p</code> process with exactly one browser surface. <code>--strict-mcp-config</code> loads a single MCP server, the only built-in tool is <code>Read</code>, and <code>--setting-sources project</code> keeps my personal instructions out of the run. Without Bash or WebFetch, the agent cannot quietly <code>curl</code> the page instead of using the browser. Orca's browser is a command-line tool, so that lane gets Bash restricted to <code>orca</code> browser commands and nothing else.</p>
+                    </div>
+                    <aside class="aside-note" aria-label="Model and viewport">
+                        <p>Model: Opus 5.5 at medium effort. Browsers ran visible and maximized, and a beacon on every page recorded the real viewport, so I know every surface saw the same 1728-pixel-wide page.</p>
+                    </aside>
+                </div>
+
+                <div class="scroll tablewrap" role="region" aria-label="The five surfaces" tabindex="0">
+                    <table class="plain">
                         <caption>The five surfaces</caption>
                         <thead><tr><th scope="col">Surface</th><th scope="col">Engine</th><th scope="col">Interface</th></tr></thead>
                         <tbody>
-                            <tr><th scope="row"><span class="sw s1" aria-hidden="true"></span>Claude in Chrome</th><td>Chrome 154, my own profile</td><td>Extension, built into Claude Code</td></tr>
-                            <tr><th scope="row"><span class="sw s2" aria-hidden="true"></span>Playwright · Chrome</th><td>Chrome 154, fresh profile</td><td><code>@playwright/mcp</code> 0.0.83</td></tr>
-                            <tr><th scope="row"><span class="sw s3" aria-hidden="true"></span>Orca browser</th><td>Chromium 150 (Electron)</td><td><code>orca</code> CLI through Bash</td></tr>
-                            <tr><th scope="row"><span class="sw s4" aria-hidden="true"></span>Safari MCP</th><td>Safari 27</td><td><code>safaridriver --mcp</code></td></tr>
-                            <tr><th scope="row"><span class="sw s5" aria-hidden="true"></span>Playwright · WebKit</th><td>WebKit 26.6 (Playwright build)</td><td><code>@playwright/mcp</code> 0.0.83</td></tr>
+                            <tr><th scope="row" class="v1"><span class="sw" aria-hidden="true"></span>Claude in Chrome</th><td>Chrome 154, my own profile</td><td>Extension, built into Claude Code</td></tr>
+                            <tr><th scope="row" class="v2"><span class="sw" aria-hidden="true"></span>Playwright · Chrome</th><td>Chrome 154, fresh profile</td><td><code>@playwright/mcp</code> 0.0.83</td></tr>
+                            <tr><th scope="row" class="v3"><span class="sw" aria-hidden="true"></span>Orca browser</th><td>Chromium 150 (Electron)</td><td><code>orca</code> CLI through Bash</td></tr>
+                            <tr><th scope="row" class="v4"><span class="sw" aria-hidden="true"></span>Safari MCP</th><td>Safari 27</td><td><code>safaridriver --mcp</code></td></tr>
+                            <tr><th scope="row" class="v5"><span class="sw" aria-hidden="true"></span>Playwright · WebKit</th><td>WebKit 26.6 (Playwright build)</td><td><code>@playwright/mcp</code> 0.0.83</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <p>The pages come from a local fixture server. Each run gets its own origin (<code>run-&lt;id&gt;.localhost</code>), so cookies and storage start empty in every browser, even in my everyday Chrome profile. The expected answers are derived from a secret that only exists in the runner's memory, so an agent that reads the benchmark's source still cannot compute them. There are 36 tasks in four tiers:</p>
-                <ul>
-                    <li><strong>22 capability probes</strong>, three runs each: one skill per page, from clicking a button to a cross-origin iframe, a <code>confirm()</code> dialog, an HttpOnly cookie, a code drawn on a canvas below the fold, and print media.</li>
-                    <li><strong>8 realistic tasks</strong>, five runs each: a checkout with validation, a filtered catalog, a paginated table, a wizard with a custom date picker, a login with a code from a second tab, detail-page scraping, a shop full of pop-ups, and a pointer-driven kanban board.</li>
-                    <li><strong>5 bug hunts</strong>, five runs each: pages with planted problems that move every run, from failing API calls behind normal-looking widgets to widgets that only break in WebKit.</li>
-                    <li><strong>A baseline</strong> that answers without tools, to measure what each surface costs before it does anything.</li>
-                </ul>
-                <p>Model: Opus 5.5 at medium effort. Browsers ran visible and maximized, and a beacon on every page recorded the real viewport, so I know every surface saw the same 1728-pixel-wide page.</p>
-
-                <h2>Results</h2>
-                <div class="table-wrap">
-                    <table>
-                        <caption>670 runs, September 29–30, 2026</caption>
-                        <thead><tr><th scope="col">Surface</th><th scope="col">Probes</th><th scope="col">Passed</th><th scope="col">Time</th><th scope="col">Input</th><th scope="col">Fixed</th><th scope="col">Cost</th></tr></thead>
-                        <tbody>
-                            <tr><th scope="row"><span class="sw s1" aria-hidden="true"></span>Claude in Chrome</th><td class="n">20/22</td><td class="n">126/131</td><td class="n">26 s</td><td class="n">122k</td><td class="n">15.7k</td><td class="n">$22.5</td></tr>
-                            <tr><th scope="row"><span class="sw s2" aria-hidden="true"></span>Playwright · Chrome</th><td class="n">22/22</td><td class="n">131/131</td><td class="n">13 s</td><td class="n">57k</td><td class="n">10.6k</td><td class="n">$10.9</td></tr>
-                            <tr><th scope="row"><span class="sw s3" aria-hidden="true"></span>Orca browser</th><td class="n">20/22</td><td class="n">126/131</td><td class="n">13 s</td><td class="n">33k</td><td class="n">6.4k</td><td class="n">$14.9</td></tr>
-                            <tr><th scope="row"><span class="sw s4" aria-hidden="true"></span>Safari MCP</th><td class="n">21/22</td><td class="n">127/131</td><td class="n">13 s</td><td class="n">38k</td><td class="n">8.5k</td><td class="n">$10.7</td></tr>
-                            <tr><th scope="row"><span class="sw s5" aria-hidden="true"></span>Playwright · WebKit</th><td class="n">22/22</td><td class="n">131/131</td><td class="n">13 s</td><td class="n">57k</td><td class="n">10.6k</td><td class="n">$11.6</td></tr>
-                        </tbody>
-                    </table>
+                <div class="prose">
+                    <p>The pages come from a local fixture server. Each run gets its own origin (<code>run-&lt;id&gt;.localhost</code>), so cookies and storage start empty in every browser, even in my everyday Chrome profile. The expected answers are derived from a secret that only exists in the runner's memory, so an agent that reads the benchmark's source still cannot compute them. There are 36 tasks in four tiers:</p>
+                    <ul class="tiers">
+                        <li><span class="runs"><b>22</b>× 3 runs</span><p><strong>22 capability probes</strong>, three runs each: one skill per page, from clicking a button to a cross-origin iframe, a <code>confirm()</code> dialog, an HttpOnly cookie, a code drawn on a canvas below the fold, and print media.</p></li>
+                        <li><span class="runs"><b>8</b>× 5 runs</span><p><strong>8 realistic tasks</strong>, five runs each: a checkout with validation, a filtered catalog, a paginated table, a wizard with a custom date picker, a login with a code from a second tab, detail-page scraping, a shop full of pop-ups, and a pointer-driven kanban board.</p></li>
+                        <li><span class="runs"><b>5</b>× 5 runs</span><p><strong>5 bug hunts</strong>, five runs each: pages with planted problems that move every run, from failing API calls behind normal-looking widgets to widgets that only break in WebKit.</p></li>
+                        <li><span class="runs"><b>1</b>× 3 runs</span><p><strong>A baseline</strong> that answers without tools, to measure what each surface costs before it does anything.</p></li>
+                    </ul>
+                    <p class="sum">66 + 40 + 25 + 3 = 134 runs per surface · × 5 surfaces = 670</p>
                 </div>
-                <p><em>Probes</em> counts capability probes passed in at least two of three runs. <em>Time</em> and <em>Input</em> are medians per run; <em>Fixed</em> is the input a reply costs before any tool is used. Cost is the list-price equivalent Claude Code reports for each surface's 134 runs; I ran on a Max subscription, and the whole benchmark used about 4% of a week's allowance.</p>
+            </section>
 
-                <figure class="chart">
-                    <figcaption>Input tokens per run</figcaption>
-                    <svg viewBox="0 0 640 202" role="img" aria-label="Median input tokens per run: Claude in Chrome 122k, Playwright Chrome 57k, Orca 33k, Safari MCP 38k, Playwright WebKit 57k"><line class="grid" x1="158" x2="158" y1="6" y2="180"/><text class="tick" x="158" y="196" text-anchor="middle">0k</text><line class="grid" x1="264.5" x2="264.5" y1="6" y2="180"/><text class="tick" x="264.5" y="196" text-anchor="middle">35k</text><line class="grid" x1="371" x2="371" y1="6" y2="180"/><text class="tick" x="371" y="196" text-anchor="middle">70k</text><line class="grid" x1="477.5" x2="477.5" y1="6" y2="180"/><text class="tick" x="477.5" y="196" text-anchor="middle">105k</text><line class="grid" x1="584" x2="584" y1="6" y2="180"/><text class="tick" x="584" y="196" text-anchor="middle">140k</text><text class="label" x="148" y="27" text-anchor="end">Claude in Chrome</text><path class="f1" d="M158,15h367.2a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-367.2z"/><text class="value" x="537.2" y="27">122k</text><text class="label" x="148" y="61" text-anchor="end">Playwright · Chrome</text><path class="f2" d="M158,49h170.1a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-170.1z"/><text class="value" x="340.1" y="61">57.2k</text><text class="label" x="148" y="95" text-anchor="end">Orca browser</text><path class="f3" d="M158,83h95.8a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-95.8z"/><text class="value" x="265.8" y="95">32.8k</text><text class="label" x="148" y="129" text-anchor="end">Safari MCP</text><path class="f4" d="M158,117h110.7a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-110.7z"/><text class="value" x="280.7" y="129">37.7k</text><text class="label" x="148" y="163" text-anchor="end">Playwright · WebKit</text><path class="f5" d="M158,151h169.1a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-169.1z"/><text class="value" x="339.1" y="163">56.9k</text></svg>
-                    <p class="note">Median over probes, realistic tasks and bug hunts.</p>
-                </figure>
-
-                <figure class="chart">
-                    <figcaption>Time per realistic task</figcaption>
-                    <svg viewBox="0 0 640 202" role="img" aria-label="Median time per realistic task: Claude in Chrome 39 s, Playwright Chrome 20 s, Orca 27 s, Safari MCP 22 s, Playwright WebKit 21 s"><line class="grid" x1="158" x2="158" y1="6" y2="180"/><text class="tick" x="158" y="196" text-anchor="middle">0 s</text><line class="grid" x1="264.5" x2="264.5" y1="6" y2="180"/><text class="tick" x="264.5" y="196" text-anchor="middle">10 s</text><line class="grid" x1="371" x2="371" y1="6" y2="180"/><text class="tick" x="371" y="196" text-anchor="middle">20 s</text><line class="grid" x1="477.5" x2="477.5" y1="6" y2="180"/><text class="tick" x="477.5" y="196" text-anchor="middle">30 s</text><line class="grid" x1="584" x2="584" y1="6" y2="180"/><text class="tick" x="584" y="196" text-anchor="middle">40 s</text><text class="label" x="148" y="27" text-anchor="end">Claude in Chrome</text><path class="f1" d="M158,15h411.4a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-411.4z"/><text class="value" x="581.4" y="27">39 s</text><text class="label" x="148" y="61" text-anchor="end">Playwright · Chrome</text><path class="f2" d="M158,49h209.0a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-209.0z"/><text class="value" x="379.0" y="61">20 s</text><text class="label" x="148" y="95" text-anchor="end">Orca browser</text><path class="f3" d="M158,83h283.6a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-283.6z"/><text class="value" x="453.6" y="95">27 s</text><text class="label" x="148" y="129" text-anchor="end">Safari MCP</text><path class="f4" d="M158,117h230.3a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-230.3z"/><text class="value" x="400.3" y="129">22 s</text><text class="label" x="148" y="163" text-anchor="end">Playwright · WebKit</text><path class="f5" d="M158,151h219.6a4,4 0 0 1 4,4v8a4,4 0 0 1 -4,4h-219.6z"/><text class="value" x="389.6" y="163">21 s</text></svg>
-                    <p class="note">Median seconds for the eight multi-step tasks.</p>
-                </figure>
-
-                <h2>What I learned</h2>
-
-                <h3>Every surface can do the job. The difference is cost.</h3>
-                <p>No surface fell below 96%, and Playwright passed all 131 runs on both engines. The spread is in time and tokens: the most expensive surface needed twice the time and nearly four times the input tokens of the cheapest.</p>
-
-                <h3>Claude in Chrome costs about twice as much</h3>
-                <p>A median run took 26 seconds and 122k input tokens, against 13 seconds and 33k to 57k for the other four. It reaches for screenshots more often (a median of 4.5 images per realistic task), its fixed context is the largest at 16k tokens, and each tool call round-trips through the extension. It also could not read an HttpOnly cookie in any run. None of this measures what it is actually for: driving my own browser, where I am already signed in. For that it is still the only option here.</p>
-
-                <h3>Safari MCP is the leanest, with two gaps</h3>
-                <p>It was the cheapest surface overall and returned the most compact page reads, a median of 0.8 KB per probe. Two things are missing. A native <code>confirm()</code> left its click call hanging until the four-minute timeout, in all three dialog runs. And it has no press-move-release gesture, so on the kanban board the agent had to fake the drag by dispatching pointer events from page JavaScript. Only 70% of its passing interactions reached the page as real input (<code>event.isTrusted</code>), against 100% for every other surface.</p>
-
-                <h3>Orca's browser is fragile around the host app</h3>
-                <p>A native <code>confirm()</code> dropped the Orca runtime connection, so every command after it failed; one of three runs got through with a workaround. <code>set media print</code> reported success without changing the media type. Its speed also depended on the Orca window itself: its viewport follows the panel size, and once the harness pre-opened a pinned tab and the workspace was on screen, its median run time halved.</p>
-
-                <h3>The interface matters more than the engine</h3>
-                <p>Playwright on Chrome and on WebKit finished within a second of each other on every tier. The bug hunt built around engine differences came out exactly as the engines dictate: both WebKit surfaces found three broken widgets, because two of them call Chromium-only APIs, and all three Chromium surfaces found one.</p>
-
-                <h3>The agents said when they took a shortcut</h3>
-                <p>Chrome and Orca have no way to emulate print media, so the agents improvised: one rewrote the page's print CSS and fired <code>beforeprint</code>, the other rendered a PDF to trigger the print handler. Both reached the right code and explained the workaround in their notes. The checker still fails those runs, because the task asked for real print media. They are the only five cases where an agent claimed success and failed.</p>
-
-                <h2>What went wrong while measuring</h2>
-                <p>The benchmark found bugs in itself before it found anything about the browsers, and I think those are worth listing:</p>
-                <ul>
-                    <li><strong>Two fixture bugs.</strong> Before the full run, a scripted Playwright solution solved every task in both Chrome and WebKit. It caught a pop-up whose <code>display: flex</code> overrode the <code>hidden</code> attribute, which would have failed every agent, and a console page where two identical WebKit exceptions were reported as one, so the correct answer would have looked wrong.</li>
-                    <li><strong>A resized window.</strong> On the “make the viewport phone-width” probe, Claude in Chrome shrank my real Chrome window to 500 pixels and never restored it. The next four Chrome runs started narrow. The viewport beacon caught it; I discarded those runs, and the harness now restores window bounds and refuses runs that start narrower than 1700 pixels.</li>
-                    <li><strong>A false rate limit.</strong> An API <code>529 Overloaded</code> error looked like a usage limit to the first version of the runner, which then planned to sleep for four and a half hours.</li>
-                    <li><strong>A safety filter.</strong> The HttpOnly-cookie probe tripped the API's cyber safeguard in 12 of its 15 runs. “Read this session cookie” looks a lot like cookie theft. The refused turn was retracted and re-run on an older model, so that probe mixes models; the other 658 runs used Opus 5.5 only.</li>
+            <section aria-labelledby="wrong">
+                <h2 id="wrong">What went wrong while measuring</h2>
+                <p class="prose">The benchmark found bugs in itself before it found anything about the browsers, and I think those are worth listing:</p>
+                <ul class="log">
+                    <li><span class="tag">fixture</span><p><strong>Two fixture bugs.</strong> Before the full run, a scripted Playwright solution solved every task in both Chrome and WebKit. It caught a pop-up whose <code>display: flex</code> overrode the <code>hidden</code> attribute, which would have failed every agent, and a console page where two identical WebKit exceptions were reported as one, so the correct answer would have looked wrong.</p></li>
+                    <li><span class="tag">viewport</span><p><strong>A resized window.</strong> On the “make the viewport phone-width” probe, Claude in Chrome shrank my real Chrome window to 500 pixels and never restored it. The next four Chrome runs started narrow. The viewport beacon caught it; I discarded those runs, and the harness now restores window bounds and refuses runs that start narrower than 1700 pixels.</p></li>
+                    <li><span class="tag">runner</span><p><strong>A false rate limit.</strong> An API <code>529 Overloaded</code> error looked like a usage limit to the first version of the runner, which then planned to sleep for four and a half hours.</p></li>
+                    <li><span class="tag">safety filter</span><p><strong>A safety filter.</strong> The HttpOnly-cookie probe tripped the API's cyber safeguard in 12 of its 15 runs. “Read this session cookie” looks a lot like cookie theft. The refused turn was retracted and re-run on an older model, so that probe mixes models; the other 658 runs used Opus 5.5 only.</p></li>
                 </ul>
-                <p>The first 174 runs ran one at a time. For the rest I ran all five surfaces on the same task at the same moment, which was about five times faster and arguably fairer, since every surface saw the same machine load and the same API conditions. For four of the five, times on matching tasks moved by at most 6%.</p>
+                <p class="prose">The first 174 runs ran one at a time. For the rest I ran all five surfaces on the same task at the same moment, which was about five times faster and arguably fairer, since every surface saw the same machine load and the same API conditions. For four of the five, times on matching tasks moved by at most 6%.</p>
+            </section>
 
-                <h2>What I use now</h2>
-                <p>For agent work in a clean browser, such as tests, scraping and form automation, I default to Playwright's MCP server. It never failed, and the engine is a flag. When token cost matters and the page has no native dialogs or drags, Safari's MCP server is surprisingly good. Claude in Chrome is for the times I need my own signed-in session, and I budget twice the tokens for it.</p>
-
-                <h2>Limits</h2>
+            <section class="prose" aria-labelledby="limits">
+                <h2 id="limits">Limits</h2>
                 <ul>
                     <li>One model at one effort setting. The tasks turned out easy for it, so this benchmark separates cost and edge cases better than general competence. A smaller model would probably spread the pass rates.</li>
                     <li>Claude Code ships its own system-prompt guidance for Claude in Chrome; the others rely on their tool descriptions.</li>
                     <li>Engine builds differ, and Playwright's WebKit is not the engine inside Safari 27.</li>
                     <li>Local fixture pages only: no sign-in walls, bot detection or very heavy real-world pages.</li>
                 </ul>
+            </section>
 
-                <h2>Sources</h2>
+            <section class="prose" aria-labelledby="sources">
+                <h2 id="sources">Sources</h2>
                 <ol class="sources">
                     <li><a href="https://github.com/umutc/agent-browser-benchmark">umutc/agent-browser-benchmark</a>: the harness, fixture site, task definitions, all 670 run records and every raw agent transcript (MIT). The full report with per-task tables is <code>results/main/report.html</code>.</li>
                     <li><a href="https://webkit.org/blog/18136/introducing-the-safari-mcp-server-for-web-developers/">Introducing the Safari MCP server for web developers</a>, WebKit blog.</li>
                     <li><a href="https://www.npmjs.com/package/@playwright/mcp">@playwright/mcp</a> on npm; this benchmark used version 0.0.83.</li>
                     <li><a href="https://claude.com/claude-code">Claude Code</a>, the agent every run used, version 2.1.285.</li>
                 </ol>
-
-                <p class="post-footer-note">I designed and ran this benchmark with Claude Code as a pair. It wrote most of the harness and the first draft of this post; I reviewed the design, the anomalies and the conclusions.</p>
-            </div>
+                <p class="disclosure">I designed and ran this benchmark with Claude Code as a pair. It wrote most of the harness and the first draft of this post; I reviewed the design, the anomalies and the conclusions.</p>
+            </section>
         </article>
     </main>
 
-    <footer class="site-footer">
+    <footer class="wrap site-footer">
         <p><a href="/">Umut Çelik</a> · <a href="/blog/">Writing</a></p>
     </footer>
 </body>
