@@ -18,8 +18,10 @@ python3 -m http.server 8000
 
 ## Architecture
 
-- `index.html` — single page, semantic HTML with JSON-LD Person schema in head
-- `assets/css/main.css` — hand-written CSS, system font stack, CSS variables, `prefers-color-scheme` dark mode
+- `index.html` — homepage, semantic HTML with JSON-LD Person schema in head
+- `blog/index.html` — post list; `blog/<slug>/index.html` — one folder per post (BlogPosting JSON-LD, og tags)
+- `assets/css/main.css` — tokens, the shared shell (page width, site nav, footer, skip link) and the homepage; system font stack, `prefers-color-scheme` dark mode
+- `assets/css/post.css` — blog-only styles, loaded after `main.css` on blog pages; charts are static SVG or HTML/CSS bars, no JS
 - `umut-celik.jpg` — avatar (400x400, ~60 KB, resized from a 767 KB PNG via `sips`)
 - `robots.txt` + `sitemap.xml` — crawler metadata
 - `CNAME` — managed automatically by GitHub Pages Settings; do not create a file by hand
@@ -54,7 +56,7 @@ The old AWS Amplify app (`d2ktjps5ul2e7i`, eu-west-1) and ACM validation CNAMEs 
 
 ## Tech guardrails
 
-- Keep the page single-file, no JS unless a feature genuinely needs it.
+- No JS unless a feature genuinely needs it (JSON-LD data blocks are fine). New posts reuse `post.css`; add the post to `blog/index.html`, the homepage Writing section and `sitemap.xml`.
 - System font stack (no Google Fonts, no web fonts). Page should render before first paint.
 - Lighthouse target: 100/100/100/100. If a change drops any score, revert or fix.
 - No external analytics beacon currently. If added later, prefer Plausible over GA4.

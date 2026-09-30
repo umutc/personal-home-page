@@ -82,23 +82,45 @@
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <main id="main">
-        <header class="intro">
-            <img class="avatar" src="umut-celik.jpg" alt="Umut Çelik" width="96" height="96">
+    <header class="wrap">
+        <nav class="site-nav" aria-label="Site">
+            <a href="/" aria-current="page">Umut Çelik</a>
+            <a href="/blog/">Writing</a>
+            <a class="push" href="/Umut_Celik_Resume.pdf">Resume (PDF)</a>
+        </nav>
+    </header>
+
+    <main id="main" class="wrap home">
+        <div class="home-lede">
             <div>
-                <h1>Umut Çelik</h1>
-                <p class="role">Senior Software Engineer</p>
-                <p class="tagline">AI agents, web scraping at scale, AWS</p>
-                <p class="meta">New York, NY</p>
-            </div>
-        </header>
+                <header class="id">
+                    <img class="avatar" src="umut-celik.jpg" alt="Umut Çelik" width="96" height="96">
+                    <div>
+                        <h1>Umut Çelik</h1>
+                        <p class="role">Senior Software Engineer</p>
+                        <p class="tagline">AI agents, web scraping at scale, AWS</p>
+                        <p class="meta">New York, NY</p>
+                    </div>
+                </header>
 
-        <section class="about">
-            <p>I build production systems in <strong>Node.js</strong> and <strong>TypeScript</strong> — currently running autonomous AI agents at MotoMate across 10K+ dealer sites, cutting per-platform dev time by ~75%.</p>
+                <section class="about" aria-label="About">
+                    <p>I build production systems in <strong>Node.js</strong> and <strong>TypeScript</strong> — currently running autonomous AI agents at MotoMate across 10K+ dealer sites, cutting per-platform dev time by ~75%.</p>
             <p>10+ years shipping across EdTech, global IoT, and B2B SaaS. Deep experience with AWS serverless, large-scale scraping, and the Model Context Protocol.</p>
-        </section>
+                </section>
+            </div>
 
-        <section id="stack" aria-labelledby="stack-heading">
+            <section class="latest" id="writing" aria-labelledby="writing-heading">
+                <h2 id="writing-heading">Writing</h2>
+                <div class="entry">
+                    <a href="/blog/five-ways-to-drive-a-browser/">Five ways to drive a browser</a>
+                    <p>A 670-run benchmark of browser tools for AI agents.</p>
+                    <time datetime="2026-09-30">Sep 2026</time>
+                </div>
+                <p class="more"><a href="/blog/">All writing</a></p>
+            </section>
+        </div>
+
+        <section class="row" id="stack" aria-labelledby="stack-heading">
             <h2 id="stack-heading">Stack</h2>
             <dl class="stack">
                 <dt>Primary</dt>
@@ -114,7 +136,7 @@
             </dl>
         </section>
 
-        <section id="work" aria-labelledby="work-heading">
+        <section class="row" id="work" aria-labelledby="work-heading">
             <h2 id="work-heading">Selected Work</h2>
             <ol class="timeline">
                 <li>
@@ -150,7 +172,7 @@
             </ol>
         </section>
 
-        <section id="education" aria-labelledby="edu-heading">
+        <section class="row" id="education" aria-labelledby="edu-heading">
             <h2 id="edu-heading">Education</h2>
             <ul class="edu">
                 <li>
@@ -164,17 +186,7 @@
             </ul>
         </section>
 
-        <section id="writing" aria-labelledby="writing-heading">
-            <h2 id="writing-heading">Writing</h2>
-            <ul class="edu">
-                <li>
-                    <span class="when">Sep 2026</span>
-                    <span class="what"><a href="/blog/five-ways-to-drive-a-browser/">Five ways to drive a browser</a> · a 670-run benchmark of browser tools for AI agents</span>
-                </li>
-            </ul>
-        </section>
-
-        <section id="elsewhere" aria-labelledby="elsewhere-heading">
+        <section class="row" id="elsewhere" aria-labelledby="elsewhere-heading">
             <h2 id="elsewhere-heading">Elsewhere</h2>
             <ul class="links">
                 <li><a href="mailto:05umutcelik@gmail.com">Email</a></li>
@@ -184,7 +196,7 @@
         </section>
     </main>
 
-    <footer class="site-footer">
+    <footer class="wrap site-footer">
         <p>Updated September 2026 · <a href="/blog/">Writing</a> · <a href="/Umut_Celik_Resume.pdf">Resume (PDF)</a></p>
     </footer>
 </body>
