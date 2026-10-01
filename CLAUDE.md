@@ -58,6 +58,7 @@ The old AWS Amplify app (`d2ktjps5ul2e7i`, eu-west-1) and ACM validation CNAMEs 
 
 ## Tech guardrails
 
+- JSON-LD dates (`dateModified`, `datePublished`, `dateCreated`) are full ISO 8601 datetimes with offset, e.g. `2026-09-30T00:00:00-04:00`. A bare date makes Search Console flag ProfilePage with "Invalid datetime value".
 - No JS unless a feature genuinely needs it (JSON-LD data blocks are fine). New posts reuse `post.css`. For each new post: add it to `blog/index.html` (and its Blog JSON-LD), the homepage Writing panel, `blog/feed.xml`, `sitemap.xml` and `llms.txt`; add an entry to `POSTS` in `scripts/build-og.py` and regenerate the OG images; link the author to the `#person` @id.
 - System font stack (no Google Fonts, no web fonts). Page should render before first paint.
 - Lighthouse target: 100/100/100/100. If a change drops any score, revert or fix.
